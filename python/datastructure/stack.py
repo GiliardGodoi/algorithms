@@ -42,11 +42,12 @@ class Stack(object):
     
     def isEmpty(self):
         return not bool(self.content)
-if __name__ == '__main__':
-    pilha = Stack()
-    for i in range(15,20):
-        pilha.push(i)
-    for i in range(10,5,-1):
-        pilha.push(i)
-    for i in range(1,13):
-        print pilha.pop(), pilha.find_min()
+
+# if __name__ == '__main__':
+#     pilha = Stack()
+#     for i in range(15,20):
+#         pilha.push(i)
+#     for i in range(10,5,-1):
+#         pilha.push(i)
+#     for i in range(1,13):
+#         print pilha.pop(), pilha.find_min()
