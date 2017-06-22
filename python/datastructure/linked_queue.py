@@ -9,6 +9,8 @@ class LinkedQueue(object):
     def __init__(self):
         self.head = None
         self.tail = None
+        self._length = 0
+        self.iter_pointer = None
     
     def isEmpty(self):
         return not bool(self.head)
@@ -29,6 +31,7 @@ class LinkedQueue(object):
         elif self.tail:
             self.tail.pointer = node
             self.tail = node
+        self._length += 1
     
     def size(self):
         node = self.head
@@ -42,6 +45,9 @@ class LinkedQueue(object):
         if self.head:
             return self.head.value
     
+    def __len__(self):
+        return self._length
+        
     def __str__(self):
         _string_ = ''
         node = self.head
@@ -49,6 +55,19 @@ class LinkedQueue(object):
             _string_ += (str(node.value) + '-> ' )
             node = node.pointer
         return _string_
+    
+    def __iter__(self):
+        self.iter_pointer = self.head
+        return self
+    
+    def next(self):
+        if self.iter_pointer :
+            value = self.iter_pointer.value
+            self.iter_pointer = self.iter_pointer.pointer
+            return value
+        else :
+            raise StopIteration()
+
     
     def _print(self):
         node = self.head
