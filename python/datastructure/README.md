@@ -1,4 +1,4 @@
-###Sugestões de exercícios
+## Sugestões de exercícios
 
 **Permutações produzidas pelo desempilhar.**   Suponha que objetos  1,2,3,4  são colocados, nesta ordem, numa pilha inicialmente vazia. Depois de empilhar um objeto, você pode tirar zero ou mais elementos da pilha. Cada elemento desempilhado é impresso numa folha de papel. 
 Por exemplo, a sequência de operações empilha 1, empilha 2, desempilha, empilha 3, desempilha, desempilha, empilha 4, desempilha,produz a impressão da sequência 2,3,1,4. 
