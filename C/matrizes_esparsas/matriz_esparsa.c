@@ -1,6 +1,7 @@
 #include<stdlib.h>
 #include<stdio.h>
 #include<stdbool.h>
+#include <windows.h>
 #include<malloc.h>
 
 typedef struct tempNo {
@@ -93,6 +94,6 @@ int main(){
         float valor = valorMatriz(matriz,lin,col);
         printf("valor recuperado: %f",valor);
     }
-    system("PAUSE");
-    return 0;
+    // system("PAUSE");
+    exit(0);
 }
