@@ -1,3 +1,11 @@
+/*  UNIVERSIDADE TECNOLÓGICA FEDERAL DO PARANÁ - Campus de Cornélio Procópio
+
+    DISCIPLINA: IF53B - ESTRUTURA DE DADOS - TURMA - N13
+    Prof. Dr. Danilo Sipoli Sanches
+    ALUNO: Giliard Almeida de Godoi - RA 1581597
+
+    ATV 2015-04-14 - PILHA
+*/
 #include<stdlib.h>
 #include<stdio.h>
 
@@ -16,7 +24,7 @@ void push(Pilha* P, int valor){ // empilha
         novo = (Lista*) malloc(sizeof(Lista));
         novo->info = valor;
         if(P->topo!=NULL){
-            //escreva o seu c�digo aqui
+            //escreva o seu c�digo aqui
             novo->prox = P->topo;
             P->topo = novo;
         }else{

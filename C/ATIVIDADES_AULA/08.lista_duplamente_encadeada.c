@@ -1,3 +1,11 @@
+/*  UNIVERSIDADE TECNOL√ìGICA FEDERAL DO PARAN√Å - Campus de Corn√©lio Proc√≥pio
+
+    DISCIPLINA: IF53B - ESTRUTURA DE DADOS - TURMA - N13
+    Prof. Dr. Danilo Sipoli Sanches
+    ALUNO: Giliard Almeida de Godoi - RA 1581597
+
+    ATV 2015-03-31 - lista duplamente encadeada
+*/
 #include<stdlib.h>
 #include<stdio.h>
 
@@ -55,7 +63,7 @@ Lista* liberaLista(Lista* L){
 
 
 
-    6 -  Vc ainda quer apagar este ˙ltimo elemento?
+    6 -  Vc ainda quer apagar este ÔøΩltimo elemento?
  */
 Lista* apagarLista(Lista* L, int valor){
     Lista *aux = L;
@@ -63,7 +71,7 @@ Lista* apagarLista(Lista* L, int valor){
     while(aux!= NULL && aux->info!= valor){
         aux = aux->prox;
     }
-    /* 1 - Lista È vazia? */
+    /* 1 - Lista ÔøΩ vazia? */
     if(aux == NULL){
         return aux;
     }
@@ -75,14 +83,14 @@ Lista* apagarLista(Lista* L, int valor){
             aux = NULL;
             return aux;
         }
-        /* 4 - O elemento a ser apagado È o primeiro? */
+        /* 4 - O elemento a ser apagado ÔøΩ o primeiro? */
         if(aux->ant==NULL){
             L = L->prox;
             free(L->ant);
             L->ant = NULL;
             return L;
         }
-        /* 5 - O elemento a ser apagado È o ˙ltimo? */
+        /* 5 - O elemento a ser apagado ÔøΩ o ÔøΩltimo? */
         if(aux->prox==NULL){
             aux->ant->prox = NULL;
             free(aux);

@@ -1,3 +1,11 @@
+/*  UNIVERSIDADE TECNOLÓGICA FEDERAL DO PARANÁ - Campus de Cornélio Procópio
+
+    DISCIPLINA: IF53B - ESTRUTURA DE DADOS - TURMA - N13
+    Prof. Dr. Danilo Sipoli Sanches
+    ALUNO: Giliard Almeida de Godoi - RA 1581597
+
+    ATV 2015-04-13 FUNÇOES COM FILA
+*/
 #include<stdlib.h>
 #include<stdio.h>
 
@@ -35,7 +43,7 @@ void insereElementoFila(Fila* F, int valor){
 
 void apagaElementoFila(Fila* F){
     Lista *aux;
-    if(F->ini!= NULL){ //condi��o de Fila vazia
+    if(F->ini!= NULL){ //condi��o de Fila vazia
         aux = F->ini;
         if(F->ini == F->fim){ //
             F->ini = NULL;

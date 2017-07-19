@@ -1,3 +1,11 @@
+/*  UNIVERSIDADE TECNOLÓGICA FEDERAL DO PARANÁ - Campus de Cornélio Procópio
+
+    DISCIPLINA: IF53B - ESTRUTURA DE DADOS - TURMA - N13
+    Prof. Dr. Danilo Sipoli Sanches
+    ALUNO: Giliard Almeida de Godoi - RA 1581597
+
+    ATV 2015-03-03 - Structs Aninhadas.
+*/
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -30,7 +38,7 @@ int main(){
     scanf("%f", &A1->nota->P2);
     printf("Digite a nota da APS: ");
     scanf("%f", &A1->nota->APS);
-    printf("Digite o n�mero de faltas: ");
+    printf("Digite o n�mero de faltas: ");
     scanf("%d", &A1->nota->faltas);
 
     printf("\n\n%s", A1->nome);

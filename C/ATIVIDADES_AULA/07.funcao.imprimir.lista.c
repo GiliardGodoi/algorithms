@@ -1,3 +1,11 @@
+/*  UNIVERSIDADE TECNOL√ìGICA FEDERAL DO PARAN√Å - Campus de Corn√©lio Proc√≥pio
+
+    DISCIPLINA: IF53B - ESTRUTURA DE DADOS - TURMA - N13
+    Prof. Dr. Danilo Sipoli Sanches
+    ALUNO: Giliard Almeida de Godoi - RA 1581597
+
+    ATV 2015-03-10 funcao imprimir lista
+*/
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -22,8 +30,8 @@ int main(){
     L2->prox=NULL;
 
     /* Liga L1 com L2
-     * O ponteiro L2 ficar· livre para
-     * armazenar outro endereÁo
+     * O ponteiro L2 ficarÔøΩ livre para
+     * armazenar outro endereÔøΩo
      */
     L1->prox=L2;
 
@@ -33,7 +41,7 @@ int main(){
     L2->prox=NULL;
 
     /* Liga o segundo elemento com L2
-     * O ponteiro L2 ficar· livre novamente
+     * O ponteiro L2 ficarÔøΩ livre novamente
      */
     L1->prox->prox=L2;
     int num;

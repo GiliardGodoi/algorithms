@@ -1,3 +1,11 @@
+/*  UNIVERSIDADE TECNOL√ìGICA FEDERAL DO PARAN√Å - Campus de Corn√©lio Proc√≥pio
+
+    DISCIPLINA: IF53B - ESTRUTURA DE DADOS - TURMA - N13
+    Prof. Dr. Danilo Sipoli Sanches
+    ALUNO: Giliard Almeida de Godoi - RA 1581597
+
+    ATV 2015-03-03 - Vetor de structs aninhadas.
+*/
 #include<stdio.h>
 #include<stdlib.h>
 #define TAM 2
@@ -20,12 +28,12 @@ int calcFaltas(Aluno * a, int qtd);
 void imprime(Aluno *a, int qtd);
 
 int main(){
-    // DeclaraÁ„o das vari·veis
+    // DeclaraÔøΩÔøΩo das variÔøΩveis
     Aluno *turma;
     int i;
     float media;
 
-    //AlocaÁ„o da memÛria
+    //AlocaÔøΩÔøΩo da memÔøΩria
     turma = (Aluno *) malloc(TAM*sizeof(Aluno));
     for(i = 0; i < TAM; i++){
         turma[i].nota = (Nota *) malloc(sizeof(Nota));
