@@ -23,7 +23,7 @@ void inicializarMatriz(MATRIZ* m, int lin, int col){
     m->linhas = lin;
     m->colunas = col;
     m->A = (PONT*) malloc(lin*sizeof(PONT));
-    for(i=0;i<lin;i++) m->A[i] = NULL;
+    for(i=0;i<lin;i++){ m->A[i] = NULL;}
 }
 
 bool atribuirMatriz(MATRIZ* m, int lin, int col, float val){
@@ -69,6 +69,7 @@ float valorMatriz(MATRIZ* m,int lin,int col){
 
 int main(){
     MATRIZ* matriz;
+    matriz = (MATRIZ*) malloc(sizeof(MATRIZ));
     inicializarMatriz(matriz, 10,10);
     int lin, col, val;
     for(int i=0;i<10;i++){
@@ -84,7 +85,7 @@ int main(){
         atribuirMatriz(matriz,lin,col,val);
     }
 
-    for(int i = 0; i<10; i++){
+    for(int j = 0; j<10; j++){
         printf("Obter valor para\nlinha: ");
         scanf("%d",&lin);
 
@@ -94,6 +95,6 @@ int main(){
         float valor = valorMatriz(matriz,lin,col);
         printf("valor recuperado: %f",valor);
     }
-    // system("PAUSE");
+    printf("Sucesso!!");
     exit(0);
 }
