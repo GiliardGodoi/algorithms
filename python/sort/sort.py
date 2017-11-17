@@ -22,5 +22,16 @@ class SelectionSort(Sort):
                 seq[i],seq[max_j] = seq[max_j], seq[i]
         return seq
 
+class Quicksort(Sort):
+    def sort(self, seq = []):
+        if len(seq) <= 1:
+            return seq
+        pivot = seq[len(seq) // 2]
+        left = [x for x in seq if x < pivot]
+        middle = [x for x in seq if x == pivot]
+        right = [x for x in seq if x > pivot]
+        return self.sort(left) + middle + self.sort(right)
+
 if __name__ == "__main__":
-    s = Sort()
+    s = Quicksort()
+    print(s.sort([3,6,8,10,1,2,1]))
