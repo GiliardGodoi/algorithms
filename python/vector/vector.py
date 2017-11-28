@@ -4,7 +4,6 @@ from decimal import Decimal, getcontext
 getcontext().prec = 30
 
 class Vector(object):
-
     CANNOT_NORMALIZE_ZERO_VECTOR_MSG = 'Can not normalize the zero vector'
     CANNOT_COMPUTE_AN_ANGLE_WITH_THE_ZERO_VECTOR_MSG = "Cannot compute an angle with the zero vector"
 
@@ -15,7 +14,7 @@ class Vector(object):
             self.coordinates = tuple([Decimal(x) for x in coordinates])
             self.dimension = len(self.coordinates)
         except ValueError:
-            raise ValueError('The coordinates must be nonempty')
+            raise ValueError('The coordinates must be no nempty')
         except TypeError:
             raise TypeError('The coordinates must be an iterable')
 
@@ -24,6 +23,21 @@ class Vector(object):
 
     def __eq__(self, v):
         return self.coordinates == v.coordinates
+
+    def __len__(self):
+        return self.dimension
+
+    def __getitem__(self, i):
+        return self.coordinates[i]
+
+    def __add__(self,v):
+        return self.plus(v)
+
+    def __sub__(self, v):
+        return self.minus(v)
+
+    def __abs__(self):
+        return sqrt(self.dot(self))
 
     def plus(self, v):
         #list comprehennssi
@@ -77,7 +91,7 @@ class Vector(object):
 
     def angle_degrees(self,vetor):
         angle = self.angle_rad(vetor)
-        return degrees(angle)
+        return angle
 
     def angle_with(self, vetor, in_degrees=False):
         try:
@@ -102,7 +116,12 @@ class Vector(object):
         return abs(self.dot(v)) < tolerance
 
     def is_parallel_to(self, v):
-        return ( self.is_zero() or
-                 v.is_zero() or
-                 self.angle_with(v) == 0 or
-                 self.angle_with(v) == pi )
+        return (self.is_zero() or
+                v.is_zero() or
+                self.angle_with(v) == 0 or
+                self.angle_with(v) == pi)
+    
+    def component_parallel_to(self, basis):
+        u = self.normalized()
+        weight = u.dot(basis)
+        return u.times_scalar(weight)
