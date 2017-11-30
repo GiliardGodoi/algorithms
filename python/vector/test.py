@@ -81,6 +81,21 @@ def test_parallel_or_orthogonal():
     print(v4.is_parallel_to(w4), v4.is_orthogonal_to(w4))
 
 
+def teste_built_in_function():
+    xCoords = [1.0, 2.0, 3.0, 4.0]
+    yCoords = [5.0, 2.0, 4.0, 1.0]
+
+    x = Vector(xCoords)
+    y = Vector(yCoords)
+
+    print('x        = ' + str(x))
+    print('y        = ' + str(y))
+    print('x + y    = ' + str(x + y))
+    print('10x      = ' + str(x.times_scalar(10.0)))
+    print('|x|      = ' + str(abs(x)))
+    print('<x, y>   = ' + str(x.dot(y)))
+    print('|x - y|  = ' + str(abs(x - y)))
+
 #test_magnitude_vetor_unitario()
 #test_zip()
 #test_scalar()
@@ -88,4 +103,5 @@ def test_parallel_or_orthogonal():
 #dot_product_vector_zero()
 #if __name__ == '__main__'
 #teste_soma()
-test_parallel_or_orthogonal()
+#test_parallel_or_orthogonal()
+teste_built_in_function()
