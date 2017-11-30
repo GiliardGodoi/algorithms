@@ -90,7 +90,8 @@ class Vector(object):
             raise Exception('One or both vectors are equal zero')
 
     def angle_degrees(self,vetor):
-        angle = self.angle_rad(vetor)
+        rad = self.angle_rad(vetor)
+        angle = (rad * 180) / pi
         return angle
 
     def angle_with(self, vetor, in_degrees=False):
