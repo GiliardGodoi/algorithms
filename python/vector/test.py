@@ -15,8 +15,17 @@ class VectorTest(ut.TestCase):
         self.assertEqual(v-w,Vector([-4,0,-1,3]))
 
     def test_len(self):
-        v1 = Vector([0,0,0])
-        self.assertEqual(len(v1), 3)
+        z = Vector([10000])
+        self.assertEqual(len(z), 1)
+
+        y = Vector([-4,-3])
+        self.assertEqual(len(y), 2)
+
+        x = Vector([0,0,0])
+        self.assertEqual(len(x), 3)
+        
+        w = Vector([5.0, 2.0, 4.0, 1.0])
+        self.assertEqual(len(w), 4)
 
     def test_abs(self):
         v = Vector([0,1,0])
@@ -53,6 +62,26 @@ class VectorTest(ut.TestCase):
         v2 = Vector([2,5,8])
         self.assertEqual(v1.dot(v2), 51)
 
+    def test_parallel_or_orthogonal(self):
+        v1 = Vector([-7.579, -7.88])
+        w1 = Vector([22.737, 23.64])
+        self.assertTrue(v1.is_parallel_to(w1))
+        self.assertFalse(v1.is_orthogonal_to(w1))
+
+        v2 = Vector([-2.029, 9.97, 4.172])
+        w2 = Vector([-9.231, -6.639, -7.724])
+        self.assertFalse(v2.is_parallel_to(w2))
+        self.assertFalse(v2.is_orthogonal_to(w2))
+
+        v3 = Vector([-2.328, -7.284, -1.214])
+        w3 = Vector([-1.821, 1.072, -2.94])
+        self.assertFalse(v3.is_parallel_to(w3))
+        self.assertTrue(v3.is_orthogonal_to(w3))
+
+        v4 = Vector([2.118, 4.827])
+        w4 = Vector([0,0])
+        self.assertTrue(v4.is_parallel_to(w4))
+        self.assertTrue(v4.is_orthogonal_to(w4))
 
 def test_magnitude_vetor_unitario():
     v1 = Vector([-0.221, 7.437])
@@ -90,33 +119,10 @@ def dot_product_and_angle():
     print(v4.angle_degrees(w4))
 
 
-def test_parallel_or_orthogonal():
-    v1 = Vector([-7.579, -7.88])
-    w1 = Vector([22.737, 23.64])
-    print("Teste 1...\nParalelo\tOrtogonal")
-    print(v1.is_parallel_to(w1), v1.is_orthogonal_to(w1))
-
-    v2 = Vector([-2.029, 9.97, 4.172])
-    w2 = Vector([-9.231, -6.639, -7.724])
-    print("\n\nTeste 2...\nParalelo\tOrthogonal")
-    print(v2.is_parallel_to(w2), v2.is_orthogonal_to(w2))
-
-    v3 = Vector([-2.328, -7.284, -1.214])
-    w3 = Vector([-1.821, 1.072, -2.94])
-    print("\n\nTeste 3...\nParalelo\tOrthogonal")
-    print(v3.is_parallel_to(w3), v3.is_orthogonal_to(w3))
-
-    v4 = Vector([2.118, 4.827])
-    w4 = Vector([0,0])
-    print("\n\nTeste 4...\nParalelo\tOrthogonal")
-    print(v4.is_parallel_to(w4), v4.is_orthogonal_to(w4))
-
 # #test_magnitude_vetor_unitario()
-# #test_scalar()
 # #dot_product_and_angle()
 # #dot_product_vector_zero()
-# #test_parallel_or_orthogonal()
-# teste_built_in_function()
+
 
 if __name__ == "__main__" :
     ut.main()
