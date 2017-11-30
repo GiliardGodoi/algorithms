@@ -1,12 +1,57 @@
+import unittest as ut
 from vector import Vector
 
+class VectorTest(ut.TestCase):
 
-def teste_soma():
-    v1 = Vector([5,5,5])
-    v2 = Vector([2, 2, 2])
+    def test_plus(self):
+        v1 = Vector([1,2,3])
+        v2 = Vector([2, 2, 2])
+        v3 = v1 + v2
+        self.assertEqual(v3,Vector([3,4,5]))
 
-    v3 = v1.plus(v2)
-    print(v3)
+    def test_minus(self):
+        v = Vector([1.0, 2.0, 3.0, 4.0])
+        w = Vector([5.0, 2.0, 4.0, 1.0])
+        self.assertEqual(v-w,Vector([-4,0,-1,3]))
+
+    def test_len(self):
+        v1 = Vector([0,0,0])
+        self.assertEqual(len(v1), 3)
+
+    def test_abs(self):
+        v = Vector([0,1,0])
+        self.assertEqual(abs(v),1)
+
+    def test_getitem(self):
+        v1 = Vector([9,8,7])
+        self.assertEqual(v1[0],9)
+        self.assertEqual(v1[1],8)
+        self.assertEqual(v1[2],7)
+
+    def test_is_zero(self):
+        v1 = Vector([0,0,0])
+        self.assertTrue(v1.is_zero())
+
+        v2 = Vector([0,1,0])
+        self.assertFalse(v2.is_zero())
+    
+    def test_times_scalar(self):
+        xCoords = [1.0, 2.0, 3.0, 4.0]
+        yCoords = [5.0, 2.0, 4.0, 1.0]
+        x = Vector(xCoords)
+        y = Vector(yCoords)
+        self.assertEqual(x.times_scalar(10), Vector([10,20,30,40]))
+        self.assertEqual(y.times_scalar(10), Vector([50,20,40,10]))
+
+    def test_dot_product_with_zeror_vector(self):
+        v = Vector([0, 0, 0])
+        w = Vector([1, 2, 3])
+        self.assertEqual(v.dot(w),0)
+
+    def test_dot_product(self):
+        v1 = Vector([2,3,4])
+        v2 = Vector([2,5,8])
+        self.assertEqual(v1.dot(v2), 51)
 
 
 def test_magnitude_vetor_unitario():
@@ -44,20 +89,6 @@ def dot_product_and_angle():
     w4 = Vector([2.751, 8.259, 3.985])
     print(v4.angle_degrees(w4))
 
-def dot_product_vector_zero():
-    v = Vector([0, 0, 0])
-    w = Vector([1, 2, 3])
-    print(v.angle_with(w))
-
-
-def test_scalar():
-    v1 = Vector([2,3,4])
-    v2 = Vector([2,5,8])
-    print(v1.dot(v2))
-
-def test_zip():
-    vetor = [ x+y for x, y in zip(range(100), range(100))]
-    assert vetor[10] == 20
 
 def test_parallel_or_orthogonal():
     v1 = Vector([-7.579, -7.88])
@@ -80,28 +111,12 @@ def test_parallel_or_orthogonal():
     print("\n\nTeste 4...\nParalelo\tOrthogonal")
     print(v4.is_parallel_to(w4), v4.is_orthogonal_to(w4))
 
+# #test_magnitude_vetor_unitario()
+# #test_scalar()
+# #dot_product_and_angle()
+# #dot_product_vector_zero()
+# #test_parallel_or_orthogonal()
+# teste_built_in_function()
 
-def teste_built_in_function():
-    xCoords = [1.0, 2.0, 3.0, 4.0]
-    yCoords = [5.0, 2.0, 4.0, 1.0]
-
-    x = Vector(xCoords)
-    y = Vector(yCoords)
-
-    print('x        = ' + str(x))
-    print('y        = ' + str(y))
-    print('x + y    = ' + str(x + y))
-    print('10x      = ' + str(x.times_scalar(10.0)))
-    print('|x|      = ' + str(abs(x)))
-    print('<x, y>   = ' + str(x.dot(y)))
-    print('|x - y|  = ' + str(abs(x - y)))
-
-#test_magnitude_vetor_unitario()
-#test_zip()
-#test_scalar()
-#dot_product_and_angle()
-#dot_product_vector_zero()
-#if __name__ == '__main__'
-#teste_soma()
-#test_parallel_or_orthogonal()
-teste_built_in_function()
+if __name__ == "__main__" :
+    ut.main()
