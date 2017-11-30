@@ -1,4 +1,5 @@
 import unittest as ut
+import math
 from vector import Vector
 
 class VectorTest(ut.TestCase):
@@ -36,6 +37,32 @@ class VectorTest(ut.TestCase):
         self.assertEqual(v1[0],9)
         self.assertEqual(v1[1],8)
         self.assertEqual(v1[2],7)
+
+    def test_angles_degree(self):
+        v = Vector([1,0,0])
+        w = Vector([0,1,0])
+        self.assertEqual(v.angle_degrees(w),90)
+        self.assertEqual(v.angle_degrees(v),0)
+
+        t = Vector([0,0,0])
+        with self.assertRaises(Exception) as cm:
+            v.angle_degrees(t)
+
+    def test_rad_angles(self):
+        v = Vector([1,0,0])
+        w = Vector([0,1,0])
+        self.assertEqual(v.angle_rad(w),(math.pi/2))
+        self.assertEqual(w.angle_rad(w),0)
+
+        t = Vector([0,0,0])
+        with self.assertRaises(Exception) as cm:
+            v.angle_rad(t)
+
+    def test_angle_with(self):
+        v = Vector([1,0,0])
+        w = Vector([0,1,0])
+        self.assertEqual(v.angle_with(w),(math.pi/2))
+        self.assertEqual(v.angle_with(w,in_degrees=True),90)
 
     def test_is_zero(self):
         v1 = Vector([0,0,0])
