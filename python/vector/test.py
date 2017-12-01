@@ -4,6 +4,21 @@ from vector import Vector
 
 class VectorTest(ut.TestCase):
 
+    def test_construct_vector(self):
+        v1 = Vector([2,3,5])
+        self.assertIsNotNone(v1)
+        self.assertIsInstance(v1,Vector)
+        
+        with self.assertRaises(TypeError) as err :
+            v2 = Vector()
+        
+        with self.assertRaises(Exception) as err :
+            v3 = Vector({'a' : 4, 'b': 5, 'c' : 6})
+            w = Vector("abracadabra")
+        
+        with self.assertRaises(ValueError) as err :
+            v4 = Vector([])
+
     def test_plus(self):
         v1 = Vector([1,2,3])
         v2 = Vector([2, 2, 2])
