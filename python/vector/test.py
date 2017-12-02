@@ -1,5 +1,6 @@
 import unittest as ut
 import math
+from decimal import Decimal
 from vector import Vector
 
 class VectorTest(ut.TestCase):
@@ -137,13 +138,24 @@ class VectorTest(ut.TestCase):
 
     def test_magnitude_vetor_unitario(self):
         v1 = Vector([-0.221, 7.437])
-        tamV1 = v1.magnitude()
+        u1 = v1.normalized()
+        self.assertAlmostEqual(v1.magnitude(),Decimal(7.440282925),places=9)
+        self.assertAlmostEqual(u1.magnitude(),Decimal(1.0))
 
         v2 = Vector([8.813, -1.331, -6.247])
+        u2 = v2.normalized()
+        self.assertAlmostEqual(v2.magnitude(),Decimal(10.88418757),places=8)
+        self.assertAlmostEqual(u2.magnitude(),Decimal(1.0))
 
         v3 = Vector([5.581, -2.136])
+        u3 = v3.normalized()
+        self.assertAlmostEqual(v3.magnitude(),Decimal(5.975789237),places=9)
+        self.assertAlmostEqual(u2.magnitude(),Decimal(1.0))
 
         v4 = Vector([1.996, 3.108, -4.554])
+        u4 = v4.normalized()
+        self.assertAlmostEqual(v4.magnitude(),Decimal(5.863667453),places=9)
+        self.assertAlmostEqual(u4.magnitude(),Decimal(1.0))
 
     def dot_product_and_angle(self):
         v1 = Vector([7.887, 4.138])
