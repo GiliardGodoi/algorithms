@@ -170,5 +170,20 @@ class VectorTest(ut.TestCase):
         v4 = Vector([7.35, 0.221, 5.188])
         w4 = Vector([2.751, 8.259, 3.985])
 
+    def test_parallel_and_orthogonal_component(self):
+        v = Vector([3.039 , 1.879])
+        b = Vector([0.825, 2.036])
+        self.assertAlmostEqual(v.component_parallel_to(b),Vector([1.083, 2.672]), places=3)
+
+        v = Vector([-9.88, -3.264, -8.159])
+        b = Vector([-2.155, -9.353, -9.473])
+        self.assertAlmostEqual(v.component_orthogonal_to(b), Vector([-8.350, 3.376, -1.434]),places=3)
+
+        v = Vector([3.009, -6.172, 3.692, -2.51])
+        b = Vector([6.404, -9.144, 2.759, 8.718])
+        p = v.component_parallel_to(b)
+        t = v.component_orthogonal_to(b)
+        self.assertAlmostEqual((p+t),v,places=3)
+
 if __name__ == "__main__" :
     ut.main()

@@ -6,6 +6,8 @@ getcontext().prec = 30
 class Vector(object):
     CANNOT_NORMALIZE_ZERO_VECTOR_MSG = 'Can not normalize the zero vector'
     CANNOT_COMPUTE_AN_ANGLE_WITH_THE_ZERO_VECTOR_MSG = "Cannot compute an angle with the zero vector"
+    NO_UNIQUE_PARALLEL_COMPONENT_MSG = "No unique pararrel component."
+    NO_UNIQUE_ORTHOGONAL_COMPONENT_MSG = "No unique orthogonal component."
 
     def __init__(self, coordinates):
         try:
@@ -14,7 +16,7 @@ class Vector(object):
             self.coordinates = tuple([Decimal(x) for x in coordinates])
             self.dimension = len(self.coordinates)
         except ValueError:
-            raise ValueError('The coordinates must be no nempty')
+            raise ValueError('The coordinates must be no empty')
         except TypeError:
             raise TypeError('The coordinates must be an iterable')
 
@@ -123,6 +125,22 @@ class Vector(object):
                 self.angle_with(v) == pi)
     
     def component_parallel_to(self, basis):
-        u = self.normalized()
-        weight = u.dot(basis)
-        return u.times_scalar(weight)
+        try:
+            u = basis.normalized()
+            weight = self.dot(u)
+            return u.times_scalar(weight)
+        except Exception as err :
+            if str(err) == self.CANNOT_NORMALIZE_ZERO_VECTOR_MSG:
+                raise Exception(self.NO_UNIQUE_PARALLEL_COMPONENT_MSG)
+            else :
+                raise Exception()
+
+    def component_orthogonal_to(self, basis):
+        try :
+            projection = self.component_parallel_to(basis)
+            return self.minus(projection)
+        except Exception as err :
+            if str(err) == self.NO_UNIQUE_PARALLEL_COMPONENT_MSG :
+                raise Exception(self.NO_UNIQUE_ORTHOGONAL_COMPONENT_MSG)
+            else :
+                raise Exception()
