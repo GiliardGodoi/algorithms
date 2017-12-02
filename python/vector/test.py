@@ -136,7 +136,7 @@ class VectorTest(ut.TestCase):
         with self.assertRaises(Exception) as expt :
             v4.angle_with(w4,in_degrees=True)
 
-    def test_magnitude_vetor_unitario(self):
+    def test_magnitude_with_vector_normalized(self):
         v1 = Vector([-0.221, 7.437])
         u1 = v1.normalized()
         self.assertAlmostEqual(v1.magnitude(),Decimal(7.440282925),places=9)
