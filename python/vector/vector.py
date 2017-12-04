@@ -23,6 +23,9 @@ class Vector(object):
     def __str__(self):
         return 'Vector: {}'.format(self.coordinates)
 
+    def __repr__(self):
+        return self.__str__()
+
     def __eq__(self, v):
         return self.coordinates == v.coordinates
 
