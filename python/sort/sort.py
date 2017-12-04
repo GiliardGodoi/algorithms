@@ -22,7 +22,7 @@ class SelectionSort(Sort):
                 seq[i],seq[max_j] = seq[max_j], seq[i]
         return seq
 
-class Quicksort(Sort):
+class QuickSort(Sort):
     def sort(self, seq = []):
         if len(seq) <= 1:
             return seq
