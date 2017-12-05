@@ -31,7 +31,3 @@ class QuickSort(Sort):
         middle = [x for x in seq if x == pivot]
         right = [x for x in seq if x > pivot]
         return self.sort(left) + middle + self.sort(right)
-
-if __name__ == "__main__":
-    s = Quicksort()
-    print(s.sort([3,6,8,10,1,2,1]))
