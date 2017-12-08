@@ -8,6 +8,7 @@ class Vector(object):
     CANNOT_COMPUTE_AN_ANGLE_WITH_THE_ZERO_VECTOR_MSG = "Cannot compute an angle with the zero vector"
     NO_UNIQUE_PARALLEL_COMPONENT_MSG = "No unique pararrel component."
     NO_UNIQUE_ORTHOGONAL_COMPONENT_MSG = "No unique orthogonal component."
+    CANNOT_CALCULATED_CROSS_PRODUCT_FROM_NO_3D_VECTORS = "No 3D vector. It cannot be calculated."
 
     def __init__(self, coordinates):
         try:
@@ -147,3 +148,38 @@ class Vector(object):
                 raise Exception(self.NO_UNIQUE_ORTHOGONAL_COMPONENT_MSG)
             else :
                 raise Exception()
+
+    def cross_product(self,vector):
+        if self.dimension != 3 or len(vector) != 3 : 
+            raise Exception(CANNOT_CALCULATED_CROSS_PRODUCT_FROM_NO_3D_VECTORS)
+        return Vector([ ( self.coordinates[1]*vector[2] - vector[1]*self.coordinates[2] ),
+                        -(self.coordinates[0]*vector[2] - vector[0]*self.coordinates[2] ),
+                         (self.coordinates[0]*vector[1] - vector[0]*self.coordinates[1] ) ])
+
+    def cross(self, vector):
+        try:
+            x1, y1, z1 = self.coordinates
+            x2, y2, z2 = vector.coordinates
+            new_coordinates = [ y1*z2 - y2*z1 ,
+                              -(x1*z2 - x2*z1),
+                                x1*y2 - x2*y1 ]
+            return Vector(new_coordinates)
+        except ValueError as error :
+            msg = str(error)
+            if msg == 'need more than 2 values to unpack' :
+                self_embedded_in_R3 = Vector(self.coordinates + ('0',))
+                v_embedded_in_R3 = Vector(vector.coordinates + ('0',))
+                return self_embedded_in_R3.cross(v_embedded_in_R3)
+            elif (msg == 'too many values to unpack' or 
+                  msg == 'need more than 1 value to unpack'):
+                raise Exception('only defined in two and three dimension')
+            else :
+                raise error
+
+    def area_of_parallelogram(self, vector) :
+        VW = self.cross_product(vector)
+        return VW.magnitude()
+
+    def area_of_triangle(self, vector):
+        parallelogram = self.area_of_parallelogram(vector)
+        return parallelogram / Decimal(2.0)

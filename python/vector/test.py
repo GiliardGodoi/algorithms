@@ -170,7 +170,7 @@ class VectorTest(ut.TestCase):
         v4 = Vector([7.35, 0.221, 5.188])
         w4 = Vector([2.751, 8.259, 3.985])
 
-    def test_parallel_and_orthogonal_component(self):
+    def test_component_parallel_and_component_orthogonal(self):
         v = Vector([3.039 , 1.879])
         b = Vector([0.825, 2.036])
         self.assertAlmostEqual(v.component_parallel_to(b),Vector([1.083, 2.672]), places=3)
@@ -184,6 +184,36 @@ class VectorTest(ut.TestCase):
         p = v.component_parallel_to(b)
         t = v.component_orthogonal_to(b)
         self.assertAlmostEqual((p+t),v,places=3)
+
+    def test_cross_product(self):
+        X = Vector([8.462, 7.893, -8.187])
+        W = Vector([6.984, -5.975, 4.778])
+        XW = X.cross_product(W)
+        self.assertAlmostEqual(XW,Vector([-11.204570000, -97.609440000, -105.685160000]),places=5)
+
+        t = Vector([9.32, 4.3232])
+        with self.assertRaises(Exception) as exe :
+            X.cross_product(t)
+    
+    def test_cross_product_with_zero_vector(self):
+        X = Vector([8.462, 7.893, -8.187])
+        Z = Vector([0,0,0])
+        self.assertAlmostEqual(X.cross_product(Z), Vector([0,0,0]))
+
+    def test_cross_product_with_parallel_vectors(self):
+        v1 = Vector([2.54, 3.96, 9.874 ])
+        w1 = Vector([17.78, 27.72, 69.118])
+        self.assertAlmostEqual(v1.cross_product(w1), Vector([0,0,0]))
+
+    def test_area_of_parallelogram(self):
+        X = Vector([8.462, 7.893, -8.187])
+        W = Vector([6.984, -5.975, 4.778])
+        self.assertAlmostEqual(X.area_of_parallelogram(W),Decimal(144.30000),places=3)
+    
+    def test_area_of_triangle(self):
+        X = Vector([8.462, 7.893, -8.187])
+        W = Vector([6.984, -5.975, 4.778])
+        self.assertAlmostEqual(X.area_of_triangle(W),Decimal(72.15001422), places=3)
 
 if __name__ == "__main__" :
     ut.main()
