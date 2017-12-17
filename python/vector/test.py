@@ -2,6 +2,7 @@ import unittest as ut
 import math
 from decimal import Decimal
 from vector import Vector
+from line import Line
 
 class VectorTest(ut.TestCase):
 
@@ -214,6 +215,31 @@ class VectorTest(ut.TestCase):
         X = Vector([8.462, 7.893, -8.187])
         W = Vector([6.984, -5.975, 4.778])
         self.assertAlmostEqual(X.area_of_triangle(W),Decimal(72.15001422), places=3)
+
+class LineTest(ut.TestCase):
+
+    def test_is_parallel_to(self):
+        l1 = Line(normal_vector=Vector([3,-2]),constant_term=1)
+        l2 = Line(normal_vector=Vector([-6,4]),constant_term=0)
+        self.assertTrue(l1.is_parallel_to(l2))
+
+        l3 = Line(normal_vector=Vector([1,2]),constant_term=3)
+        l4 = Line(normal_vector=Vector([1,-1]),constant_term=2)
+        self.assertFalse(l3.is_parallel_to(l4))
+    
+    def test_evaluate(self):
+        l1 = Line(normal_vector=Vector([3,-2]),constant_term=1)
+        self.assertAlmostEqual(l1.evaluate([5,5]),5)
+
+    def test_equal(self):
+        l1 = Line(normal_vector=Vector([4.046,2.836]),constant_term=1.21)
+        l2 = Line(normal_vector=Vector([10.115,7.09]),constant_term=3.025)
+        self.assertEqual(l1,l2)
+
+    def test_not_equal(self):
+        l1 = Line(normal_vector=Vector([7.204,3.182]),constant_term=8.68)
+        l2 = Line(normal_vector=Vector([8.172,4.114]),constant_term=9.883)
+        self.assertNotEqual(l1,l2)
 
 if __name__ == "__main__" :
     ut.main()
