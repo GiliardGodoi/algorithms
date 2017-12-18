@@ -8,8 +8,8 @@ A implementação toma por base à implementação apresentada no livro [*Introd
 
 Vários outros repositórios sobre os mesmo curso podem ser encontrados aqui:
 
-- [jongold](https://github.com/jongold/linear-algebra-refresher)
+- [jongold](https://github.com/jongold/linear-algebra-refresher) implementação utilizando *javascript*
+- [jonmagic](https://github.com/jonmagic/linear-algebra-refresher-course) implementação utilizando *Ruby*
 - [omarrayward](https://github.com/omarrayward/Linear-Algebra-Refresher-Udacity)
 - [madhavajay](https://github.com/madhavajay/ud953)
-- [jonmagic](https://github.com/jonmagic/linear-algebra-refresher-course)
 - [jeremy-shannon](https://github.com/jeremy-shannon/udacity-Linear-Algebra-Refresher)
