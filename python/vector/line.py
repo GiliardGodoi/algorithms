@@ -106,7 +106,19 @@ class Line(object):
         return connectingVector.is_orthogonal_to(self.normal_vector) and connectingVector.is_orthogonal_to(line.normal_vector)
 
     def intersection(self, line):
-        pass
+        if self.is_parallel_to(line):
+            return None
+        else :
+            A, B = self.normal_vector
+            C, D = line.normal_vector
+            k1 = self.constant_term
+            k2 = line.constant_term
+
+            determinante =  ((A*D) - (B*C))
+
+            x = ((D*k1) - (B*k2) ) / determinante
+            y =  ((A*k2) - (C*k1)) / determinante
+            return x,y
 
     @staticmethod
     def first_nonzero_index(iterable):

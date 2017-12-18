@@ -241,5 +241,17 @@ class LineTest(ut.TestCase):
         l2 = Line(normal_vector=Vector([8.172,4.114]),constant_term=9.883)
         self.assertNotEqual(l1,l2)
 
+    def test_intersection(self):
+        l1 = Line(normal_vector=Vector([7.204,3.182]),constant_term=8.68)
+        l2 = Line(normal_vector=Vector([8.172,4.114]),constant_term=9.883)
+        x,y = l1.intersection(l2)
+        self.assertAlmostEqual(x,Decimal(1.173),places=3)
+        self.assertAlmostEqual(y,Decimal(0.073),places=3)
+    
+    def test_not_intersection(self):
+        l1 = Line(normal_vector=Vector([1.182,5.562]),constant_term=6.744)
+        l2 = Line(normal_vector=Vector([1.773, 8.343]),constant_term=9.525)
+        self.assertIsNone(l1.intersection(l2))
+
 if __name__ == "__main__" :
     ut.main()
