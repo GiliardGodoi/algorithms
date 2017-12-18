@@ -3,6 +3,7 @@ import math
 from decimal import Decimal
 from vector import Vector
 from line import Line
+from plane import Plane
 
 class VectorTest(ut.TestCase):
 
@@ -252,6 +253,24 @@ class LineTest(ut.TestCase):
         l1 = Line(normal_vector=Vector([1.182,5.562]),constant_term=6.744)
         l2 = Line(normal_vector=Vector([1.773, 8.343]),constant_term=9.525)
         self.assertIsNone(l1.intersection(l2))
+
+class PlaneTest(ut.TestCase):
+
+    def test_is_parallel_to(self):
+        plane1 = Plane(Vector([-0.412, 3.806, 0.728]), -3.46)
+        plane2 = Plane(Vector([1.03, -9.515, -1.82]), 8.65)
+        self.assertTrue(plane1.is_parallel_to(plane2))
+        self.assertEqual(plane1, plane2)
+
+        plane3 = Plane(Vector([2.611, 5.528, 0.283]), 4.6)
+        plane4 = Plane(Vector([7.715, 8.306, 5.342]), 3.76)
+        self.assertFalse(plane3.is_parallel_to(plane4))
+        self.assertNotEqual(plane3, plane4)
+
+        plane5 = Plane(Vector([-7.926, 8.625, -7.212]), -7.952)
+        plane6 = Plane(Vector([-2.642, 2.875, -2.404]), -2.443)
+        self.assertTrue(plane5.is_parallel_to(plane6))
+        self.assertNotEqual(plane5, plane6)
 
 if __name__ == "__main__" :
     ut.main()
