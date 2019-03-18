@@ -1,3 +1,9 @@
+/**
+ * Resolve um sistema de equações lineares com método de Triangularização  Gaussiana
+ * 
+ * CONDIÇÕES: A matriz A de coeficientes deve ser uma matriz quadrada NxN, 
+ * cujo tamanho representa a Ordem do Sistema.
+ */
 #include<stdio.h>
 #include<stdlib.h>
 
