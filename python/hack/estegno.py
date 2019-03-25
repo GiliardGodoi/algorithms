@@ -9,6 +9,9 @@ from PIL import Image
 # Define quantos pixels serao utilizados para informar o tamanho da mensagem oculta
 PIXELS_RESERVADOS = 10
 
+def xrange(super):
+    return range(0,super)
+
 def pixels(tam):
     for y in xrange(tam[1]):
         for x in xrange(tam[0]):
@@ -74,6 +77,5 @@ if __name__ == "__main__":
 
     text = recuperar('saida.png')
     
-    print len(text)
-
-    print recupera_str(text)
+    print(len(text))
+    print(recupera_str(text))
