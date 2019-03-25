@@ -65,6 +65,11 @@ def cutting_points():
 
 
 def selection(population):
+    '''
+        Seleção por torneio dos índividuos.
+            - Seleciona dois índividuos da população e seleciona o com o menor fitness.
+            - Repete o procedimento até ter uma população final de mesmo tamanho que a população individual.
+    '''
 
     size = len(population) # ira selecionar a mesma quantidade da população inicial
 
