@@ -1,7 +1,7 @@
 import random
 from functools import reduce
 
-N_dimensions = 5
+N_dimensions = 20
 X_inf = -5.12
 X_sup = 5.12
 
@@ -49,9 +49,12 @@ def crossover(population):
     return new_population
 
 def crossing_cromosome(chromo1, chromo2):
-    return crossing_uniform(chromo1, chromo2)
+    # return crossing_discrete(chromo1, chromo2)
+    # return crossing_flat(chromo1,chromo2)
+    return crossing_parametric(chromo1,chromo2)
 
-def crossing_uniform(chromo1,chromo2,probability=0.7): 
+
+def crossing_discrete(chromo1,chromo2,probability=0.7): 
     size = 0
     if len(chromo1) == len(chromo2):
         size = len(chromo1)
@@ -73,7 +76,32 @@ def crossing_uniform(chromo1,chromo2,probability=0.7):
 
     return new_chromo1,new_chromo2
 
-    
+def crossing_parametric(chromo1,chromo2):
+    delta = random.random()
+    zeta = lambda x, y : (delta *  x) + (1 - delta) * y
+
+    new_chromo1 = list()
+    new_chromo2 = list()
+
+    for c1,c2 in zip(chromo1,chromo2):
+        new_chromo1.append(zeta(c1,c2))
+        new_chromo2.append(zeta(c2,c1))
+
+    return new_chromo1,new_chromo2
+
+def crossing_flat(chromo1,chromo2):
+
+    uniform = lambda x, y : random.uniform(x,y)
+
+    new_chromo1 = list()
+    new_chromo2 = list()
+
+    for c1, c2 in zip(chromo1,chromo2):
+        new_chromo1.append(uniform(c1,c2))
+        new_chromo2.append(uniform(c1,c2))
+
+    return new_chromo1,new_chromo2
+
 
 def mutation(chromosome):
     return mutation_simple_random(chromosome)
@@ -117,7 +145,10 @@ def spinning_the_wheel(population,totalFitness):
     return individual
 
 def selection_by_contest(population): 
-    pass
+    
+    for _ in population:
+        c1, c2 = random.sample(population,k=2)
+        
 
 def evaluate(population):
     pass
@@ -129,11 +160,14 @@ def print_out(population):
 if __name__ == "__main__":
     print('De Jong Benchmark\t... a \'real\' implementation :P\n\n')
 
-    populationSize = 20
+    populationSize = 100
     iteration = 0
-    MAX_REPEAT = 200
+    MAX_REPEAT = 500
 
     population = generate_random_population(populationSize)
+    print_out(population)
+
+    print("\n\n\n")
 
     while (iteration < MAX_REPEAT):
         population = sorted(population,key=lambda item: item['fitness'])
