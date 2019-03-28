@@ -38,8 +38,8 @@ def dejong_function(variables):
     return sum(list(mapped))
 
 def fitness(chromosome):
-    return 1 / (dejong_function(decode_chromosome(chromosome)) + 1)
-    # return dejong_function(decode_chromosome(chromosome))
+    # return 1 / (dejong_function(decode_chromosome(chromosome)) + 1)
+    return dejong_function(decode_chromosome(chromosome))
 
 def random_chromosome(length=chromo_length):
     tmp = [random.choice(['0','1']) for _ in range(0,length) ]
