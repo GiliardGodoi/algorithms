@@ -2,6 +2,7 @@ import random
 from functools import reduce
 
 N_dimensions = 20
+rounded_by = 3
 X_inf = -5.12
 X_sup = 5.12
 
@@ -42,6 +43,7 @@ def crossover(population):
 
         new_chromo = dict()
         new_chromo['chromosome'] = chromo1 if fitness(chromo1) >= fitness(chromo2) else chromo2
+        new_chromo['chromosome'] = [ round(nro,rounded_by) for nro in new_chromo['chromosome'] ]
         new_chromo['fitness'] = fitness(new_chromo['chromosome'])
 
         new_population.append(new_chromo)
@@ -59,7 +61,7 @@ def crossing_discrete(chromo1,chromo2,probability=0.7):
     if len(chromo1) == len(chromo2):
         size = len(chromo1)
     else:
-        raise Exception("chromosomes have different size")
+        raise Exception("chromosomes have different size") # they have...
 
     new_chromo1 = list()
     new_chromo2 = list()
@@ -107,7 +109,7 @@ def mutation(chromosome):
     return mutation_simple_random(chromosome)
 
 
-def mutation_simple_random(chromosome, probability=0.1):
+def mutation_simple_random(chromosome, probability=0.2):
     for i,_ in enumerate(chromosome) :
         p = random.random()
         if p <= probability:
@@ -117,7 +119,8 @@ def mutation_simple_random(chromosome, probability=0.1):
 
 
 def selection(population):
-    return selection_by_wheel(population)
+    # return selection_by_wheel(population)
+    return selection_by_contest(population)
 
 def selection_by_wheel(population):
     '''
@@ -145,13 +148,20 @@ def spinning_the_wheel(population,totalFitness):
     return individual
 
 def selection_by_contest(population): 
-    
+
+    new_population = list()
+
     for _ in population:
         c1, c2 = random.sample(population,k=2)
-        
+        new_chromo = c1 if c1['fitness'] >= c2['fitness'] else c2
+        new_population.append(new_chromo)
 
-def evaluate(population):
-    pass
+    return new_population
+       
+
+def elitsm(new_population,old_population):
+    size = len(old_population)
+    return sorted((new_population + old_population),key=lambda item : item['fitness'],reverse=True)[:size]
 
 def print_out(population):
     for p in population:
@@ -162,7 +172,7 @@ if __name__ == "__main__":
 
     populationSize = 100
     iteration = 0
-    MAX_REPEAT = 500
+    MAX_REPEAT = 1000
 
     population = generate_random_population(populationSize)
     print_out(population)
@@ -175,7 +185,7 @@ if __name__ == "__main__":
         # print_out(population)
 
         selected = selection(population)
-        population = crossover(selected)
+        population = elitsm(crossover(selected),population)
         iteration += 1
 
     population = sorted(population,key=lambda item: item['fitness'])

@@ -26,8 +26,7 @@ def decode_chromosome(chromosome,dimensions=N_dimensions):
 
     for i in range(0,len(chromosome), lenght):
         seq = chromosome[i:i+lenght]
-        number = binario2number(seq)
-        real = convert2real(number,len(seq))
+        real = convert2real(binario2number(seq),len(seq))
         variables.append(real)
 
     return tuple(variables)
@@ -38,8 +37,8 @@ def dejong_function(variables):
     return sum(list(mapped))
 
 def fitness(chromosome):
-    # return 1 / (dejong_function(decode_chromosome(chromosome)) + 1)
-    return dejong_function(decode_chromosome(chromosome))
+    return 1 / (dejong_function(decode_chromosome(chromosome)) + 1)
+    # return dejong_function(decode_chromosome(chromosome))
 
 def random_chromosome(length=chromo_length):
     tmp = [random.choice(['0','1']) for _ in range(0,length) ]
@@ -106,8 +105,11 @@ def crossover(population):
 
     return new_population
     
-
 def selection(population):
+    return selection_by_contest(population) 
+    # return selection_by_roulette_wheel(population)
+
+def selection_by_contest(population):
     '''
         Seleção por torneio dos índividuos.
             - Seleciona dois índividuos da população e seleciona o com o menor fitness.
@@ -118,56 +120,62 @@ def selection(population):
     metade = (size // 2)
     for _ in range(0,size): 
         choosed = random.sample(population[:metade],k=2) # escolhe aleatoriamente dois elementos do conjunto
-        choosed = sorted(choosed,key=lambda item : item['fitness']) # coloca em ordem crescente
-        selected.append(choosed[0]) # seleciona sempre o com menor fitness
+        choosed = sorted(choosed,key=lambda item : item['fitness'],reverse=True) # coloca em ordem decrescente
+        selected.append(choosed[0]) # seleciona sempre o com o maior fitness
 
     return selected
 
+def selection_by_roulette_wheel(population):
+    
+    sumFitness = sum([c['fitness'] for c in population ])
+    new_population = list()
+    for _ in population:
+        selected_chromosome = spin_the_wheel(population,sumFitness)
+        new_population.append(selected_chromosome)
+    return new_population
+
+def spin_the_wheel(population,totalFitness):
+    p = random.uniform(0,totalFitness)
+    for chromo in population:
+        if p <= 0:
+            break
+        p -= chromo['fitness']
+
+    return chromo
+
+def elitsm(new_population, old_population):
+    size = len(old_population)
+    return sorted((new_population + old_population),key=lambda item : item['fitness'],reverse=True)[:size]
 
 def print_out(population):
     for p in population:
         print('{}   {:.5f}'.format(p['chromosome'],p['fitness']))
 
 
-def evaluate(population):
-    isSolved = True
-    firstIndividual = population[0]
-    
-    if firstIndividual['fitness'] == 0:
-        return isSolved
-    else :
-        return not isSolved
-
-
 if __name__ == "__main__":
-    print('De Jong Benchmark\n\n')
+    print('De Jong Benchmark\n')
 
-    populationSize = 20
+    populationSize = 100
     iteration = 0
-    MAX_REPEAT = 200
+    MAX_REPEAT = 1000
 
 
     population = generate_random_population(populationSize)
+    population = sorted(population,key=lambda item : item['fitness'])
+    print_out(population)
 
-    while True:
-        print("Iteration  ::", (iteration + 1))
-        
-        population = sorted(population,
-            key=lambda item : item['fitness'])
-        print_out(population)
-
-                # criterio de parada
-        if ( evaluate(population) or (iteration >= MAX_REPEAT) ) :
-            break
-
+    while iteration < MAX_REPEAT:
+        # print("Iteration  ::", (iteration + 1))
+        population = sorted(population,key=lambda item : item['fitness'],reverse=True)
         selected = selection(population)
-        population = crossover(selected)
+        population = elitsm(crossover(selected),population)
         iteration += 1
 
 
     print("\n\n\n")
+    population = sorted(population,key=lambda item : item['fitness'])
     print_out(population)
-    print(decode_chromosome(population[0]['chromosome']))
+    print(decode_chromosome(population[len(population)-1]['chromosome']))
         
 
 
