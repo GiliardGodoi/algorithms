@@ -3,7 +3,7 @@ import random
 Z = 52
 
 def f(x,y,w):
-    return (x**2 + 2*y + w)
+    return (2 * x + y**2 + w)
 
 def fitness(gene):
     x,y,w = translate_gene(gene)
@@ -82,8 +82,6 @@ def selection(population):
 
     return selected
     
-
-
 def crossover(population):
     
     new_population = list()
@@ -123,7 +121,6 @@ def evaluate(population):
         return not isSolved
 
 def print_population(population):
-
     for p in population: print(p['chromosome'],p['fitness'])
 
 if __name__ == "__main__":

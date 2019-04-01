@@ -33,10 +33,8 @@ def crossover(population):
 
     for _ in range(0,size_population):
         p1,p2 = random.sample(population,k=2)
-        chromo1 = p1['chromosome']
-        chromo2 = p2['chromosome']
-
-        chromo1,chromo2 = crossing_cromosome(chromo1,chromo2)
+    
+        chromo1,chromo2 = crossing_cromosome(p1,p2)
 
         chromo1 = mutation(chromo1)
         chromo2 = mutation(chromo2)
@@ -50,10 +48,12 @@ def crossover(population):
 
     return new_population
 
-def crossing_cromosome(chromo1, chromo2):
+def crossing_cromosome(indv_1, indv_2):
+    chromo1, chromo2 = indv_1['chromosome'],indv_2['chromosome']
+
     # return crossing_discrete(chromo1, chromo2)
-    # return crossing_flat(chromo1,chromo2)
-    return crossing_parametric(chromo1,chromo2)
+    return crossing_flat(chromo1,chromo2)
+    # return crossing_parametric(chromo1,chromo2)
 
 
 def crossing_discrete(chromo1,chromo2,probability=0.7): 
@@ -141,19 +141,20 @@ def selection_by_wheel(population):
 def spinning_the_wheel(population,totalFitness):
     p = random.uniform(0,totalFitness)
     for individual in population:
+        p -= individual['fitness']
         if p <= 0 : 
             break
-        p -= individual['fitness']
 
     return individual
 
 def selection_by_contest(population): 
 
     new_population = list()
-
+    __get = lambda x : x['fitness']
+    
     for _ in population:
         c1, c2 = random.sample(population,k=2)
-        new_chromo = c1 if c1['fitness'] >= c2['fitness'] else c2
+        new_chromo = c1 if __get(c1) >= __get(c2) else c2
         new_population.append(new_chromo)
 
     return new_population
@@ -170,7 +171,7 @@ def print_out(population):
 if __name__ == "__main__":
     print('De Jong Benchmark\t... a \'real\' implementation :P\n\n')
 
-    populationSize = 100
+    populationSize = 100 
     iteration = 0
     MAX_REPEAT = 1000
 
