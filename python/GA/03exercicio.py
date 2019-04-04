@@ -164,7 +164,7 @@ if __name__ == "__main__":
 
     while (nroGeneration < MAX_REPEAT) and (not isSolved(population)) :
         population = sorted_pop(population)
-        # population = normalize(population)
+        population = normalize(population)
         selected = selection(population)
         population = crossover(selected)
         nroGeneration += 1
