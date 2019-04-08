@@ -1,4 +1,5 @@
-import random 
+import random
+from logger import Logger
 
 Z_OBJETIVO = 52
 arraybit_lenght = 7 # array's size to represent a only variable (X or Y or Z)
@@ -152,22 +153,33 @@ def isSolved(population):
 def print_out(population):
     for p in population : print(p['chromosome'],p['fitness'])
 
-if __name__ == "__main__":
-    print('Starting GA algorithm...')
+std = Logger()
 
-    populationSize = 50
-    MAX_REPEAT = 150
+def main(populationSize=50,max_repeat=150):
+  
     nroGeneration = 0 # iteration's number
-
     population = random_population(populationSize)
     sorted_pop = lambda population : sorted(population,key=lambda item : item['fitness'])
 
-    while (nroGeneration < MAX_REPEAT) and (not isSolved(population)) :
+    while (nroGeneration < max_repeat) and (not isSolved(population)) :
         population = sorted_pop(population)
         population = normalize(population)
         selected = selection(population)
         population = crossover(selected)
+        std.logger([p['fitness'] for p in population])
         nroGeneration += 1
     
     population = sorted_pop(population)
+    
+    return population
+
+
+if __name__ == "__main__":
+    
+    population = main(populationSize=50,max_repeat=150)
+    data = std.get_statistics_data()
+    std.draw_chart()
+
     print_out(population)
+    
+    
