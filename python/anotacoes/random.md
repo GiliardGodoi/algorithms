@@ -9,26 +9,26 @@
 **CSPRNG** - cryptographically secure PRNG
 
 ```python
-import random
+    import random
 
-random.seed(444)
+    random.seed(444)
 
-random.random()         # -> [0.0, 1.0) [fechado, aberto)
-random.randint(0, 100)  # -> [0, 100] # número inteiro entre o intervalo fechado
-random.randrange(1,10)  # -> [1, 10) # [fechado, aberto)
-random.uniform(20,30)   # -> float [x,y] # continuous uniform distribution
+    random.random()         # -> [0.0, 1.0) [fechado, aberto)
+    random.randint(0, 100)  # -> [0, 100] # número inteiro entre o intervalo fechado
+    random.randrange(1,10)  # -> [1, 10) # [fechado, aberto)
+    random.uniform(20,30)   # -> float [x,y] # continuous uniform distribution
 
-items = ['one', 'two', 'three', 'four', 'five']
-# choose sample with replacement
-random.choice(items)    # duplicates are possible
-# -----------S------------
-random.choices(items, k=2) # notice the 'S' in choices
+    items = ['one', 'two', 'three', 'four', 'five']
+    # choose sample with replacement
+    random.choice(items)    # duplicates are possible
+    # -----------S------------
+    random.choices(items, k=2) # notice the 'S' in choices
 
-# without replacement
-random.sample(items, 4)
+    # without replacement
+    random.sample(items, 4)
 
-# randomize a sequence
-random.shuffle(items)
+    # randomize a sequence
+    random.shuffle(items)
 ```
 
 ### Generating a sequence of unique random strings of uniform length
@@ -67,24 +67,24 @@ unique_strings(5, 4, string.printable)
 ### PRNGs for Arrays: numpy.random
 
 ```python
-import numpy as np
-np.random.seed(444)
-np.set_printoptions(precision=2)  # Output decimal fmt.
+    import numpy as np
+    np.random.seed(444)
+    np.set_printoptions(precision=2)  # Output decimal fmt.
 
-# Return samples from the standard normal distribution
-# each data point is independent of the others
-np.random.randn(5) # return a np.array with 5 elements
+    # Return samples from the standard normal distribution
+    # each data point is independent of the others
+    np.random.randn(5) # return a np.array with 5 elements
 
-np.random.randn(5,6) # return a np.array with shape (5,6)
+    np.random.randn(5,6) # return a np.array with shape (5,6)
 
-# `p` is the probability of choosing each element
-np.random.choice([0, 1], p=[0.6, 0.4], size=(5,4))
+    # `p` is the probability of choosing each element
+    np.random.choice([0, 1], p=[0.6, 0.4], size=(5,4))
 
-# NumPy's `randint` is [inclusive, exclusive), unlike `random.randint()`
+    # NumPy's `randint` is [inclusive, exclusive), unlike `random.randint()`
 
-np.random.choice([True, False]) # slow way
+    np.random.choice([True, False]) # slow way
 
-np.random.randint(0, 2, size=25, dtype=np.uint8).view(bool) # more faster way # and complicated
+    np.random.randint(0, 2, size=25, dtype=np.uint8).view(bool) # more faster way # and complicated
 ```
 
 ### Generating correlated data
