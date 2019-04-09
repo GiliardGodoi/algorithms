@@ -13,7 +13,7 @@ class SortTest(ut.TestCase):
 
     @classmethod
     def setUpClass(self):
-        arr = np.random.randint(99,high=1000,size=250)
+        arr = np.random.randint(0,high=10000,size=1000)
         self.array = list(arr)
         self.array.sort()
         self.sortedArray = list(self.array)
