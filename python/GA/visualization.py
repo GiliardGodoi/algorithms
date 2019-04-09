@@ -1,18 +1,42 @@
 import matplotlib
 from matplotlib import pyplot as plt
 
+def _check_xy_variable_(data=None,var=None):
+    if callable(var):
+        if data is None: 
+            raise Exception(f'Data cant be None: {data}')
+        return [var(item) for item in data]
 
-def line_plot(data,_x=lambda x: x[0],_y=lambda y: y[1],**kwargs):     
+    elif type(var) is range:
+        return list(var)
 
-    _x = [ i for i in range(1,len(data)+1)]
-    _y = [ r[1] for r in data ]
-    # _z = [ r[1] for r in self.__statisticsData ]
+    elif type(var) is list:
+        return var
 
-    ax = plt.plot(_x,_y)[0]
+    elif type(var) is str:
+        raise Exception(f'Variable cant not be string: {var}')
+    else :
+        return var
+                
 
-    if kwargs.get('output_file') : save_figure(ax,*kwargs)
+def line_plot(data=None,_x=lambda x: x[0],_y=lambda y: y[1],**kwargs):
+    # determina a natureza das variáveis _x e _y e age de acordo
+    _x = _check_xy_variable_(data,_x)
+    _y = _check_xy_variable_(data,_y)
 
-def save_figure(fig,output_file='figure.png'):
+    plt.figure()
+
+    ax = plt.plot(_x,_y)
+
+    if (type(ax) is list) and len(ax) == 1:
+        ax =  ax[0]
+
+    if kwargs.get('output_file') : 
+        save_figure(ax,output_file=kwargs.get('output_file'))
+
+def save_figure(fig,output_file='figure.png',**kwargs):
     
     if type(fig) == matplotlib.lines.Line2D:
         fig.get_figure().savefig(output_file)
+    else :
+        raise Exception(f'figure type: {type(fig)}')

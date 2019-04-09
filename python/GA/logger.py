@@ -13,8 +13,9 @@ class Logger():
     def get_statistics_data(self):
             return self.__statisticsData
 
-    def logger(self,data,**kwargs):
+    def log(self,data,**kwargs):
         record = [mean(data),pvariance(data)]
+
         if kwargs.get('iteration') :
             record = [kwargs.get('iteration')] + record
 

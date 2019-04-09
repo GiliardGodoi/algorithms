@@ -1,5 +1,6 @@
 import random
 from logger import Logger
+from visualization import line_plot
 
 Z_OBJETIVO = 52
 arraybit_lenght = 7 # array's size to represent a only variable (X or Y or Z)
@@ -153,33 +154,37 @@ def isSolved(population):
 def print_out(population):
     for p in population : print(p['chromosome'],p['fitness'])
 
-std = Logger()
+def sorted_pop(population,reversed=False):
+    return sorted(population,key=lambda item : item['fitness'],reverse=reversed)
+
+logger = Logger()
 
 def main(populationSize=50,max_repeat=150):
   
     nroGeneration = 0 # iteration's number
     population = random_population(populationSize)
-    sorted_pop = lambda population : sorted(population,key=lambda item : item['fitness'])
-
+    
     while (nroGeneration < max_repeat) and (not isSolved(population)) :
         population = sorted_pop(population)
         population = normalize(population)
         selected = selection(population)
         population = crossover(selected)
-        std.logger([p['fitness'] for p in population])
+        logger.log([p['fitness'] for p in population])
         nroGeneration += 1
     
-    population = sorted_pop(population)
+    population = sorted_pop(population,reversed=True)
     
     return population
 
 
 if __name__ == "__main__":
     
-    population = main(populationSize=50,max_repeat=150)
-    data = std.get_statistics_data()
-    std.draw_chart()
+    population = main(populationSize=150,max_repeat=1000)
+    data = logger.get_statistics_data()
+
+    line_plot(data=data,_x=range(1,len(data)+1),_y=lambda i: i[0],output_file='media_normalize.png')
+    line_plot(data=data,_x=range(1,len(data)+1),_y=lambda i: i[1],output_file='std_normalize.png')
+    
+    line_plot(data=population,_x=range(1,len(population)+1),_y=lambda i: i['fitness'],output_file='fitness.png')
 
     print_out(population)
-    
-    
