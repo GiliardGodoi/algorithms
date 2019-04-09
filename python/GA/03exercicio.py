@@ -185,6 +185,13 @@ if __name__ == "__main__":
     line_plot(data=data,_x=range(1,len(data)+1),_y=lambda i: i[0],output_file='media_normalize.png')
     line_plot(data=data,_x=range(1,len(data)+1),_y=lambda i: i[1],output_file='std_normalize.png')
     
-    line_plot(data=population,_x=range(1,len(population)+1),_y=lambda i: i['fitness'],output_file='fitness.png')
+    line_plot(data=population,
+        _x=range(1,len(population)+1),
+        _y=lambda i: i['fitness'],
+        output_file='fitness.png',
+        title="Fitness final da população",
+        xlabel="População",
+        ylabel="fitness"
+        )
 
     print_out(population)

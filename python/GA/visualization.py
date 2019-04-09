@@ -31,8 +31,14 @@ def line_plot(data=None,_x=lambda x: x[0],_y=lambda y: y[1],**kwargs):
     if (type(ax) is list) and len(ax) == 1:
         ax =  ax[0]
 
-    if kwargs.get('output_file') : 
-        save_figure(ax,output_file=kwargs.get('output_file'))
+    if kwargs.get('title') : plt.title(kwargs.get('title'))
+    if kwargs.get('xlabel') : plt.xlabel(kwargs.get('xlabel'))
+    if kwargs.get('ylabel') : plt.ylabel(kwargs.get('ylabel'))
+    if kwargs.get('xlim') : plt.xlim(kwargs.get('xlim'))
+    if kwargs.get('ylim') : plt.ylim(kwargs.get('ylim'))
+    if kwargs.get('output_file') : save_figure(ax,output_file=kwargs.get('output_file'))
+
+    return ax
 
 def save_figure(fig,output_file='figure.png',**kwargs):
     

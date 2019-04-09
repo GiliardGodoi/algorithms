@@ -20,5 +20,3 @@ class Logger():
             record = [kwargs.get('iteration')] + record
 
         self.__statisticsData.append(record)
-
-    
