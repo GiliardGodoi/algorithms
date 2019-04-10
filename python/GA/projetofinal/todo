@@ -1,0 +1,11 @@
+
+[x] Implementar um versão básica do PSO
+    [x] Implementar uma classe Particle
+    [x] Implementar uma classe SearchSpace para representar o espaço de busca
+[] Implementar utilizando o Design Pattenrs Stratagy as estratégias para atualização da velocidade e posição
+    [] Decidir/ Implementar a forma como estes strategies serão alternados
+        - Se por parâmetro do tipo texto no construtor de Particle, utilizando um 'switch' em um método builder dentro da classe
+        - Se por injeção de dependência: de alguma forma setar uma estratégia dentro da classe no construtor ou por um método set 
+        - 
+[] Decidir quais informações serão interessantes para analisar o log das simulações
+[] 
