@@ -17,95 +17,96 @@ class Particle(object):
         return self.__str__()
 
     def update_velocity(self,gbest,**kwargs):
-        
-        self.velocity = self.velocityUpdateStrategy.update(self,gbest,*kwargs)
+        self.velocity = self.velocityUpdateStrategy.update(self.position,self.velocity,self.pbest_position,gbest,kwargs)
     
     def update_position(self):
         self.position = self.position + self.velocity
 
 
 class VelocityUpdateStrategy():
-    def update(self,particle, gbest,**kwargs):
+    
+    def update(self,position,velocity,pbest, gbest,kwords,**kwargs):
         raise NotImplementedError()
 
 class DefaultVelocityUpdate(VelocityUpdateStrategy):
 
-    def update(self,particle,gbest,**kwargs):
-        r1 = np.random.rand()
-        r2 = np.random.rand()
+    def update(self,position,velocity,pbest, gbest,kwords,**kwargs):
+        r1 = np.random.uniform(0,1,size=len(position))
+        r2 = np.random.uniform(0,1,size=len(position))
 
-        c1 = kwargs.get('c1')
-        c2 = kwargs.get('c2')
-        w = kwargs.get('w')
+        c1 = kwords.get('c1')
+        c2 = kwords.get('c2')
+        w = kwords.get('w')
 
-        cognitive = c1 * r1 * (particle.pbest_position - particle.position)
-        social = c2 * r2 * (gbest - particle.position)
+        cognitive = c1 * r1 * (pbest - position)
+        social = c2 * r2 * (gbest - position)
 
-        velocity = w * particle.velocity + cognitive + social
+        velocity = w * velocity + cognitive + social
 
         return velocity
     
 
 class ConstrictionFactor(VelocityUpdateStrategy):
 
-    def update(self,particle,gbest,**kwargs):
-        kappa = kwargs.get('kappa')
-        phi = kwargs.get('phi')
+    def update(self,position,velocity,pbest, gbest,kwords,**kwargs):
+        
+        kappa = kwords.get('kappa')
+        phi = kwords.get('phi')
 
-        c1 = kwargs.get('c1')
-        c2 = kwargs.get('c2')
+        c1 = kwords.get('c1')
+        c2 = kwords.get('c2')
 
-        X = (2 * kappa) / abs((2 - phi - math.sqrt(pow(phi,2) - 4 )))
+        chi = (2 * kappa) / abs((2 - phi - math.sqrt(pow(phi,2) - 4 )))
 
-        r1 = np.random.rand()
-        r2 = np.random.rand()
+        r1 = np.random.uniform(0,1,size=len(position))
+        r2 = np.random.uniform(0,1,size=len(position))
 
-        cognitive = c1 * r1 * (particle.pbest_position - particle.position)
-        social = c2 * r2 * (gbest - particle.position)
+        cognitive = c1 * r1 * (pbest - position)
+        social = c2 * r2 * (gbest - position)
 
-        velocity = X * (particle.velocity + cognitive + social)
+        velocity = chi * (velocity + cognitive + social)
 
         return velocity
 
 
 class LinearReduction(VelocityUpdateStrategy):
 
-    def update(self,particle,gbest,**kwargs):
-        k = kwargs.get('iterarion')
-        k_max = kwargs.get('max_iterarion')
-        w_max = kwargs.get('w_max')
-        w_min = kwargs.get('w_min')
+    def update(self,position,velocity,pbest, gbest,kwords,**kwargs):
+        k = kwords.get('iterarion')
+        k_max = kwords.get('max_iterarion')
+        w_max = kwords.get('w_max')
+        w_min = kwords.get('w_min')
 
-        c1 = kwargs.get('c1')
-        c2 = kwargs.get('c2')
+        c1 = kwords.get('c1')
+        c2 = kwords.get('c2')
 
         W = w_max - k * ( (w_max - w_min) / k_max)
 
         r1 = np.random.rand()
         r2 = np.random.rand()
 
-        cognitive = c1 * r1 * (particle.pbest_position - particle.position)
-        social = c2 * r2 * (gbest - particle.position)
+        cognitive = c1 * r1 * (pbest - position)
+        social = c2 * r2 * (gbest - position)
 
-        velocity = W * particle.velocity + cognitive + social
+        velocity = W * velocity + cognitive + social
 
         return velocity
 
 
 class DefaultPositionUpdateStrategy():
 
-    def update(self,particle,**kwargs):
-        return particle.velocity + particle.velocity
+    def update(self,particle, velocity,**kwargs):
+        return velocity + particle
 
 
 class PositionUpdateStrategy():
 
-    def update(self,particle,**kwargs):
+    def update(self,position, velocity,**kwargs):
         avg_velocity = kwargs.get('avg_velocity')
         c3 = kwargs.get('c3')
 
         r1 = np.random.rand()
 
-        componete = c3 * r1 * (particle.position - avg_velocity)
+        componete = c3 * r1 * (position - avg_velocity)
 
-        return particle.velocity + particle.velocity + componete
+        return velocity + position + componete

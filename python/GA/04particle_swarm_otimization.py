@@ -11,7 +11,7 @@ class Particle:
         self.error = -1
 
     def __str__(self):
-        return f"({self.position}): pbest ({self.pbest_position})"
+        return f"({self.position}): pbest ({self.velocity})"
 
     def __repr__(self):
         return self.__str__()
