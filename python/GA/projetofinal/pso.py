@@ -9,7 +9,13 @@ from updatevelocity import ConstrictionFactor
 
 class SearchSpace():
 
-    def __init__(self,costFunction,nroParticles,maxIteration,dimensions,bounds):
+    def __init__(self,
+            costFunction,
+            nroParticles,
+            maxIteration,
+            dimensions,
+            bounds
+        ):
         # assegurando o passagem do tipo de dado certo
         assert type(nroParticles) is int
         assert type(maxIteration) is int
@@ -74,6 +80,12 @@ class SearchSpace():
     def __update_particle(self,particle):
         self.positionUpdateStrategy.update(particle)
         self.velocityUpdateStrategy.update(particle,self.gbest,w=0.5,c1=1,c2=1,c3=1)
+
+        lower_b = self.bounds[0]
+        upper_b = self.bounds[1]
+
+        np.place(particle.position, particle.position > upper_b, upper_b)
+        np.place(particle.position, particle.position < lower_b, lower_b)
 
     def get_gbest(self):
         return self.gbest

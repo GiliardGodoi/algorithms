@@ -18,9 +18,11 @@
 [] Decidir quais informações serão interessantes para analisar o log das simulações
 [] Implementar um modo de medir o tempo de execução das buscas
 
-## Refactoring
+#### Refactoring
 
-[] Limitar a posição das partículas para o espaço de busca definido: responsabilidade do SearchSpace
+[] Refatorar as funções de *benchmark* utilizadas
+[] Limitar o valor das velocidades
+[x] Limitar a posição das partículas para o espaço de busca definido: responsabilidade do SearchSpace? Who cares?
 [x] Passar as funções de benchmark para um arquivo em separado
 [x] SearchSpace será responsável por atualizar a posição e velocidade das partículas e decidirá qual estratégia **utilizar**
 [x] Calcular a velocidade média e desvio médio (de acordo com o artigo) na classe de atualização pela média das velocidades
