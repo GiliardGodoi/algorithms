@@ -1,8 +1,11 @@
 import numpy as np
 
 from particle import Particle
+from updateposition import DefaultPositionUpdate
+from updateposition import AverageVelocityBased
 from updatevelocity import DefaultVelocityUpdate
-from updateposition import DefaultPositionUpdateStrategy
+from updatevelocity import LinearReduction
+from updatevelocity import ConstrictionFactor
 
 class SearchSpace():
 
@@ -32,11 +35,28 @@ class SearchSpace():
 
     def __setup(self):
         self.particles = self.__generate_particles()
-        self.velocityUpdateStrategy = DefaultVelocityUpdate()
-        self.positionUpdateStrategy = DefaultPositionUpdateStrategy()
+        self.velocityUpdateStrategy = self.__define_velocityUpdadeStrategy("AVG_VELOCITY")
+        self.positionUpdateStrategy = self.__define_positionUpdateStrategy("default")
 
         self.is_setup = True
     
+    def __define_velocityUpdadeStrategy(self,strategy):
+        strategy = strategy.upper()
+        if strategy is "CONSTRICTION":
+            return ConstrictionFactor()
+        elif strategy is "LINEAR":
+            return LinearReduction()
+        else :
+            return DefaultVelocityUpdate()
+
+    def __define_positionUpdateStrategy(self,strategy):
+        strategy = strategy.upper()
+        if strategy is "AVG_VELOCITY":
+            return AverageVelocityBased()
+        else:
+            return DefaultPositionUpdate()
+
+
     def __generate_particles(self):
         
         bounds = self.bounds
@@ -53,7 +73,7 @@ class SearchSpace():
 
     def __update_particle(self,particle):
         self.positionUpdateStrategy.update(particle)
-        self.velocityUpdateStrategy.update(particle,self.gbest,w=0.5,c1=1,c2=1)
+        self.velocityUpdateStrategy.update(particle,self.gbest,w=0.5,c1=1,c2=1,c3=1)
 
     def get_gbest(self):
         return self.gbest

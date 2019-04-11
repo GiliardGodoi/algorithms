@@ -32,5 +32,5 @@ class Particle(object):
     def velocity(self,value):
         assert len(value) == len(self.__velocity), f'dimensões necessária: {len(self.__velocity)}'
         if not type(value) is np.ndarray:
-            value = np.array(np.array)
+            value = np.array(value)
         self.__velocity = value
