@@ -42,7 +42,7 @@ class SearchSpace():
     def __setup(self):
         self.particles = self.__generate_particles()
         self.velocityUpdateStrategy = self.__define_velocityUpdadeStrategy("LINEAR")
-        self.positionUpdateStrategy = self.__define_positionUpdateStrategy("AVG_VELOCITY")
+        self.positionUpdateStrategy = self.__define_positionUpdateStrategy("default")
 
         self.is_setup = True
     
