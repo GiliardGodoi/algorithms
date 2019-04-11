@@ -3,11 +3,10 @@ import numpy as np
 class Particle(object):
 
     def __init__(self,position,velocity,**kwargs):
-        assert len(position) == len(velocity), "Position and velocity must have the same dimension"
+        assert len(position) == len(velocity), "Posição e velocidade devem ter a mesma dimensões (tamanho)"
         self.__position = np.array(position)
         self.__velocity = np.array(velocity)
         self.pbest_position = np.array(self.position)
-        self.__dimension = len(self.__velocity)
 
     def __str__(self):
         return f'{self.__position}'
@@ -16,7 +15,7 @@ class Particle(object):
         return self.__str__()
 
     def __len__(self):
-        return len(self.__dimension)
+        return len(self.__position)
 
     @property
     def position(self):
