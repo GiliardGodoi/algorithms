@@ -41,25 +41,25 @@ class SearchSpace():
 
     def __setup(self):
         self.particles = self.__generate_particles()
-        self.velocityUpdateStrategy = self.__define_velocityUpdadeStrategy("LINEAR")
-        self.positionUpdateStrategy = self.__define_positionUpdateStrategy("AVG_VELOCITY")
+        self.velocityUpdateStrategy = self.__define_velocityUpdadeStrategy("default")
+        self.positionUpdateStrategy = self.__define_positionUpdateStrategy("default")
 
         self.is_setup = True
     
     def __define_velocityUpdadeStrategy(self,strategy="default"):
         strategy = strategy.upper()
         print(f'Velocity Update Strategy: {strategy}')
-        if strategy is "CONSTRICTION":
-            return ConstrictionFactor()
-        elif strategy is "LINEAR":
-            return LinearReduction(max_iterarion=self.MaxIteration,w_max=10,w_min=-10)
+        if strategy == "CONSTRICTION":
+            return ConstrictionFactor(c1=2.05,c2=2.05,kappa=1)
+        elif strategy == "LINEAR":
+            return LinearReduction(w_min=0.4, w_max=0.9, c1=2, c2=2, max_iteration=self.MaxIteration)
         else :
-            return DefaultVelocityUpdate()
+            return DefaultVelocityUpdate(c1=1.5,c2=2.5,w=0.5)
 
     def __define_positionUpdateStrategy(self,strategy="default"):
         strategy = strategy.upper()
         print(f'Position Update Strategy: {strategy}')
-        if strategy is "AVG_VELOCITY":
+        if strategy == "AVG_VELOCITY":
             return AverageVelocityBased()
         else:
             return DefaultPositionUpdate()
@@ -83,7 +83,7 @@ class SearchSpace():
         iteration = kwargs.get('iteration')
 
         self.positionUpdateStrategy.update(particle)
-        self.velocityUpdateStrategy.update(particle,self.gbest,w=0.5,c1=1,c2=1,c3=1,iteration=iteration)
+        self.velocityUpdateStrategy.update(particle,self.gbest,w=0.5,c1=2,c2=2,c3=2,iteration=iteration)
 
         lower_b = self.bounds[0]
         upper_b = self.bounds[1]

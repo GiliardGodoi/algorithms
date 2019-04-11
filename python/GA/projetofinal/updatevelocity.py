@@ -7,6 +7,11 @@ class VelocityUpdateStrategy():
 
 class DefaultVelocityUpdate(VelocityUpdateStrategy):
 
+    def __init__(self,c1,c2,w):
+        self.C1 = c1
+        self.C2 = c2
+        self.W = w
+
     def update(self,particle,gbest,**kwargs):
         position = particle.position
         velocity = particle.velocity
@@ -15,9 +20,9 @@ class DefaultVelocityUpdate(VelocityUpdateStrategy):
         r1 = np.random.uniform(0,1,size=len(position))
         r2 = np.random.uniform(0,1,size=len(position))
 
-        c1 = kwargs.get('c1')
-        c2 = kwargs.get('c2')
-        w = kwargs.get('w')
+        c1 = self.C1
+        c2 = self.C2
+        w = self.W
 
         cognitive = c1 * r1 * (pbest - position)
         social = c2 * r2 * (gbest - position)
@@ -27,16 +32,21 @@ class DefaultVelocityUpdate(VelocityUpdateStrategy):
 
 class ConstrictionFactor(VelocityUpdateStrategy):
 
+    def __init__(self,c1,c2,kappa):
+        self.KAPPA = kappa
+        self.C1 = c1
+        self.C2 = c2
+        self.PHI = c1 + c2
+
     def update(self,particle,gbest,**kwargs):
         position = particle.position
         velocity = particle.velocity
         pbest = particle.pbest_position
         
-        kappa = kwargs.get('kappa')
-        phi = kwargs.get('phi')
-
-        c1 = kwargs.get('c1')
-        c2 = kwargs.get('c2')
+        kappa = self.KAPPA
+        phi = self.PHI
+        c1 = self.C1
+        c2 = self.C2
 
         chi = (2 * kappa) / abs((2 - phi - np.sqrt(pow(phi,2) - 4 )))
 
@@ -51,14 +61,14 @@ class ConstrictionFactor(VelocityUpdateStrategy):
 
 class LinearReduction(VelocityUpdateStrategy):
 
-    def __init__(self,max_iterarion,w_max,w_min):
-        assert type(max_iterarion) is int
-        assert type(w_max) is int
-        assert type(w_min) is int
+    def __init__(self,w_min,w_max,c1,c2,max_iteration):
+        assert type(max_iteration) is int
 
-        self.K_MAX = max_iterarion
+        self.K_MAX = max_iteration
         self.W_MAX = w_max
         self.W_MIN = w_min
+        self.C1 = c1
+        self.C2 = c2
 
     def update(self,particle,gbest,**kwargs):
         position = particle.position
@@ -68,17 +78,17 @@ class LinearReduction(VelocityUpdateStrategy):
         k_max = self.K_MAX
         w_max = self.W_MAX
         w_min = self.W_MIN
+        c1 = self.C1
+        c2 = self.C2
 
-        k = kwargs.get('iterarion')
-        c1 = kwargs.get('c1')
-        c2 = kwargs.get('c2')
+        k = kwargs.get('iteration')
 
-        W = w_max - (k * ( (w_max - w_min) / k_max)
-)
+        W_i = w_max - (k * ( (w_max - w_min) / k_max))
+
         r1 = np.random.uniform(0,1,size=len(position))
         r2 = np.random.uniform(0,1,size=len(position))
 
         cognitive = c1 * r1 * (pbest - position)
         social = c2 * r2 * (gbest - position)
 
-        position.velocity = W * velocity + cognitive + social
+        particle.velocity = W_i * velocity + cognitive + social
