@@ -41,22 +41,24 @@ class SearchSpace():
 
     def __setup(self):
         self.particles = self.__generate_particles()
-        self.velocityUpdateStrategy = self.__define_velocityUpdadeStrategy("AVG_VELOCITY")
-        self.positionUpdateStrategy = self.__define_positionUpdateStrategy("default")
+        self.velocityUpdateStrategy = self.__define_velocityUpdadeStrategy("LINEAR")
+        self.positionUpdateStrategy = self.__define_positionUpdateStrategy("AVG_VELOCITY")
 
         self.is_setup = True
     
-    def __define_velocityUpdadeStrategy(self,strategy):
+    def __define_velocityUpdadeStrategy(self,strategy="default"):
         strategy = strategy.upper()
+        print(f'Velocity Update Strategy: {strategy}')
         if strategy is "CONSTRICTION":
             return ConstrictionFactor()
         elif strategy is "LINEAR":
-            return LinearReduction()
+            return LinearReduction(max_iterarion=self.MaxIteration,w_max=10,w_min=-10)
         else :
             return DefaultVelocityUpdate()
 
-    def __define_positionUpdateStrategy(self,strategy):
+    def __define_positionUpdateStrategy(self,strategy="default"):
         strategy = strategy.upper()
+        print(f'Position Update Strategy: {strategy}')
         if strategy is "AVG_VELOCITY":
             return AverageVelocityBased()
         else:
@@ -77,9 +79,11 @@ class SearchSpace():
         
         return tmp_particles
 
-    def __update_particle(self,particle):
+    def __update_particle(self,particle,**kwargs):
+        iteration = kwargs.get('iteration')
+
         self.positionUpdateStrategy.update(particle)
-        self.velocityUpdateStrategy.update(particle,self.gbest,w=0.5,c1=1,c2=1,c3=1)
+        self.velocityUpdateStrategy.update(particle,self.gbest,w=0.5,c1=1,c2=1,c3=1,iteration=iteration)
 
         lower_b = self.bounds[0]
         upper_b = self.bounds[1]
@@ -106,6 +110,6 @@ class SearchSpace():
                         self.gbest = p.position
             
             for p in self.particles:
-                self.__update_particle(p)
+                self.__update_particle(p,iteration=iteration)
 
             iteration += 1

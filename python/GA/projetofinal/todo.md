@@ -22,7 +22,11 @@
 
 [] Refatorar as funções de *benchmark* utilizadas
 [] Limitar o valor das velocidades
-[] Refatorar *LinearReduction* e *ConstrictionFactor* para operarem apropriadamente: como passar os argumentos que elas precisam; cada tipo de update requer um parâmetro diferente
+[x] Refatorar *LinearReduction* para operar de forma apropriada.
+[] Setar os parâmetros de LinearReduction a partir do arquivo main.py para que surta efeitos
+[] *ConstrictionFactor* para operarem apropriadamente:
+[] como passar os argumentos que as estratégias de atualização precisam; cada tipo de update requer um parâmetro diferente
+[x] Adicionar a propriedade __len__ a particle
 [x] Limitar a posição das partículas para o espaço de busca definido: responsabilidade do SearchSpace? Who cares?
 [x] Passar as funções de benchmark para um arquivo em separado
 [x] SearchSpace será responsável por atualizar a posição e velocidade das partículas e decidirá qual estratégia **utilizar**
