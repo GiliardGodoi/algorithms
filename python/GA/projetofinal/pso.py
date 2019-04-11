@@ -41,8 +41,8 @@ class SearchSpace():
 
     def __setup(self):
         self.particles = self.__generate_particles()
-        self.velocityUpdateStrategy = self.__define_velocityUpdadeStrategy("default")
-        self.positionUpdateStrategy = self.__define_positionUpdateStrategy("default")
+        self.velocityUpdateStrategy = self.__define_velocityUpdadeStrategy("LINEAR")
+        self.positionUpdateStrategy = self.__define_positionUpdateStrategy("AVG_VELOCITY")
 
         self.is_setup = True
     
@@ -60,7 +60,7 @@ class SearchSpace():
         strategy = strategy.upper()
         print(f'Position Update Strategy: {strategy}')
         if strategy == "AVG_VELOCITY":
-            return AverageVelocityBased()
+            return AverageVelocityBased(c3=0.1)
         else:
             return DefaultPositionUpdate()
 

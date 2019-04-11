@@ -21,8 +21,9 @@
 #### Refactoring
 
 [] Limitar o valor das velocidades
+[] Definir os parâmetros das estratégias a partir do arquivo main.py
+[x] Refatorar a estratégia de atualização da posição baseada na media da velocidade
 [x] Refatorar *LinearReduction* para operar de forma apropriada.
-[] Setar os parâmetros de LinearReduction a partir do arquivo main.py para que surta efeitos
 [x] Refatorar o *ConstrictionFactor* para operarem apropriadamente:
 [x] Passar os argumentos que cada estratégia necessita no respectivo construtor: correção de um erro de codificação ao instanciar a estratégia apropriada: o certo é fazer strategy == "ESTRATEGIA" e não utilizar o operador is aqui
 [x] Refatorar as funções de *benchmark* utilizadas
