@@ -1,6 +1,8 @@
 import numpy as np
 
 from particle import Particle
+from updatevelocity import DefaultVelocityUpdate
+from updateposition import DefaultPositionUpdateStrategy
 
 class SearchSpace():
 
@@ -20,13 +22,20 @@ class SearchSpace():
         self.costFunction = costFunction
         
         # somente declaração de variáveis
+        self.is_setup = False
         self.gbest = None
         self.particles = None
+        self.velocityUpdateStrategy = None
+        self.positionUpdateStrategy = None
 
         self.__setup()
 
     def __setup(self):
         self.particles = self.__generate_particles()
+        self.velocityUpdateStrategy = DefaultVelocityUpdate()
+        self.positionUpdateStrategy = DefaultPositionUpdateStrategy()
+
+        self.is_setup = True
     
     def __generate_particles(self):
         
@@ -42,7 +51,10 @@ class SearchSpace():
         
         return tmp_particles
 
-    
+    def __update_particle(self,particle):
+        self.positionUpdateStrategy.update(particle)
+        self.velocityUpdateStrategy.update(particle,self.gbest,w=0.5,c1=1,c2=1)
+
     def get_gbest(self):
         return self.gbest
 
@@ -62,7 +74,6 @@ class SearchSpace():
                         self.gbest = p.position
             
             for p in self.particles:
-                p.update_velocity(self.gbest,w=0.8,c1=1,c2=1)
-                p.update_position()
+                self.__update_particle(p)
 
             iteration += 1
