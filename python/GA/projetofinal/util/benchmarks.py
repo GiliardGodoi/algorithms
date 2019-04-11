@@ -1,37 +1,20 @@
 import numpy as np
 
 def dejong_sphere(variables):
-        return sum(map(lambda i: pow(i,2),variables))
+        return np.sum(np.power(variables,2))
 
+def quadratic_random(variables):
+    random_vector = np.random.uniform(0,1,size=len(variables))    
+    return np.sum(np.power(variables,4) + random_vector)
 
-def quadratic_random():
-    rand = np.random.rand
-    zeta = lambda nro: pow(nro,4) + rand()
+def quadratic_cosine(variables):
+    return np.sum((np.power(variables,2)) - (10 * np.cos(2*np.pi*variables) + 10))
 
-    def core_funtion(variables):
-        return sum(map(zeta,variables))
-    
-    return core_funtion
-
-def cosine_complicate():
-    
-    zeta = lambda x: pow(x,2) - 10*np.cos(2*np.pi*x) + 10
-    
-    def core(variables):
-        return sum(map(zeta,variables))
-
-    return core
-
-def other_complicate():
+def other_more_complicate(variables):
     const = 1/4000
-    zeta = lambda i,x: i*pow(x,2)
-    beta = lambda i,x: np.cos(x/np.sqrt(i)) + 1
+    indices = np.arange(1,len(variables)+1,1,dtype=np.int16)
 
-    def core(variables):
-        
-        _x = [zeta(i+1,x) for i,x in enumerate(variables)]
-        _y = [beta(i+1,x) for i,x in enumerate(variables)]
+    somatorio = np.sum(indices * np.power(variables,2))
+    produtorio = np.prod(np.cos(np.divide(variables,np.sqrt(indices)))+1)
 
-        return const * np.sum(_x) + np.prod(_y)
-
-    return core
+    return const * somatorio * produtorio
