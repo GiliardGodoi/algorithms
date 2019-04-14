@@ -13,8 +13,17 @@ if __name__ == "__main__":
                         dimensions=10,
                         bounds=[-5.12,5.12],
                         velocityStrategy="CONSTRICTION",
-                        )
+                    )
 
+    pso.set_updateStrategiesParams(c1=2.05,c2=2.05,c3=0.5,kappa=1,w=0.5,w_min=0.4,w_max=0.9)
+    
+    pso.run()
+
+    print(pso.get_gbest())
+    print('\n\n')
+    print(pso.fitness(pso.gbest))
+
+    # pso.set_updateStrategiesParams(c1=2.05,c2=2.05,c3=0.5,kappa=1,w=0.5,w_min=0.4,w_max=0.9)
     pso.run()
 
     print(pso.get_gbest())

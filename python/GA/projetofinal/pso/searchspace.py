@@ -42,24 +42,44 @@ class SearchSpace():
         self.particles = self.__generate_particles()
         self.velocityUpdateStrategy = self.__define_velocityUpdadeStrategy(self.velocityStrategyName)
         self.positionUpdateStrategy = self.__define_positionUpdateStrategy(self.positionStrategyName)
-
+        
         self.is_setup = True
     
+    def set_updateStrategiesParams(self,**kwargs):
+        if self.is_setup :
+            self.is_setup = False
+
+        if kwargs.get('c1'): 
+            self._C1 = kwargs.get('c1')
+        if kwargs.get('c2'):
+            self._C2 = kwargs.get('c2')
+        if kwargs.get('c3'):
+             self._C3 = kwargs.get('c3')
+        if kwargs.get('w'):
+            self._W = kwargs.get('w')
+        if kwargs.get('w_min'):
+            self._W_MIN = kwargs.get('w_min')
+        if kwargs.get('w_max'):
+            self._W_MAX = kwargs.get('w_max')
+        if kwargs.get('kappa'):
+            self._KAPPA = kwargs.get('kappa')
+
+
     def __define_velocityUpdadeStrategy(self,strategy="default"):
         strategy = strategy.upper()
         print(f'Velocity Update Strategy: {strategy}')
         if strategy == "CONSTRICTION":
-            return ConstrictionFactor(c1=2.05,c2=2.05,kappa=1)
+            return ConstrictionFactor(c1=self._C1,c2=self._C2,kappa=self._KAPPA)
         elif strategy == "LINEAR":
-            return LinearReduction(w_min=0.4, w_max=0.9, c1=2, c2=2, max_iteration=self.MaxIteration)
+            return LinearReduction(w_min=self._W_MIN,w_max=self._W_MAX,c1=self._C1,c2=self._C2,max_iteration=self.MaxIteration)
         else :
-            return DefaultVelocityUpdate(c1=1.5,c2=2.5,w=0.5)
+            return DefaultVelocityUpdate(c1=self._C1,c2=self._C2,w=self._W)
 
     def __define_positionUpdateStrategy(self,strategy="default"):
         strategy = strategy.upper()
         print(f'Position Update Strategy: {strategy}')
         if strategy == "AVG_VELOCITY":
-            return AverageVelocityBased(c3=0.1)
+            return AverageVelocityBased(c3=self._C3)
         else:
             return DefaultPositionUpdate()
 
@@ -115,3 +135,6 @@ class SearchSpace():
                 self.__update_particle(p,iteration=iteration)
 
             iteration += 1
+
+        # self.is_setup = False
+        self.particles = self.__generate_particles()
