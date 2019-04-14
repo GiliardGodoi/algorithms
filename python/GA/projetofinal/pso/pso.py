@@ -1,11 +1,11 @@
 import numpy as np
 
-from particle import Particle
-from updateposition import DefaultPositionUpdate
-from updateposition import AverageVelocityBased
-from updatevelocity import DefaultVelocityUpdate
-from updatevelocity import LinearReduction
-from updatevelocity import ConstrictionFactor
+from pso.particle import Particle
+from pso.updateposition import DefaultPositionUpdate
+from pso.updateposition import AverageVelocityBased
+from pso.updatevelocity import DefaultVelocityUpdate
+from pso.updatevelocity import LinearReduction
+from pso.updatevelocity import ConstrictionFactor
 
 class SearchSpace():
 
@@ -14,7 +14,8 @@ class SearchSpace():
             nroParticles,
             maxIteration,
             dimensions,
-            bounds
+            bounds,
+            **kwargs
         ):
         # assegurando o passagem do tipo de dado certo
         assert type(nroParticles) is int
@@ -24,11 +25,13 @@ class SearchSpace():
         assert type(bounds) is list
 
         # somente atribuição de variáveis passadas para o construtor
+        self.costFunction = costFunction
         self.NroParticles = nroParticles
         self.MaxIteration = maxIteration
-        self.bounds = bounds
         self.dimensions = dimensions
-        self.costFunction = costFunction
+        self.bounds = bounds
+        self.velocityStrategyName = kwargs.get("velocityStrategy","default")
+        self.positionStrategyName = kwargs.get("positionStrategy","default")
         
         # somente declaração de variáveis
         self.is_setup = False
@@ -37,12 +40,11 @@ class SearchSpace():
         self.velocityUpdateStrategy = None
         self.positionUpdateStrategy = None
 
-        self.__setup()
 
     def __setup(self):
         self.particles = self.__generate_particles()
-        self.velocityUpdateStrategy = self.__define_velocityUpdadeStrategy("LINEAR")
-        self.positionUpdateStrategy = self.__define_positionUpdateStrategy("default")
+        self.velocityUpdateStrategy = self.__define_velocityUpdadeStrategy(self.velocityStrategyName)
+        self.positionUpdateStrategy = self.__define_positionUpdateStrategy(self.positionStrategyName)
 
         self.is_setup = True
     
@@ -83,7 +85,7 @@ class SearchSpace():
         iteration = kwargs.get('iteration')
 
         self.positionUpdateStrategy.update(particle)
-        self.velocityUpdateStrategy.update(particle,self.gbest,w=0.5,c1=2,c2=2,c3=2,iteration=iteration)
+        self.velocityUpdateStrategy.update(particle,self.gbest,iteration=iteration)
 
         lower_b = self.bounds[0]
         upper_b = self.bounds[1]
@@ -98,10 +100,13 @@ class SearchSpace():
         return self.costFunction(position)
 
     def run(self):
+        if not self.is_setup:
+            self.__setup()
 
         iteration = 0
 
         while iteration < self.MaxIteration:
+            print(f'Iteration: {iteration}',end='\r')
             for p in self.particles:
                 if self.fitness(p.position) < self.fitness(p.pbest_position) :
                     p.pbest_position = p.position
