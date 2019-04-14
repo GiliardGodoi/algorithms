@@ -1,11 +1,8 @@
 import numpy as np
 
 from pso.particle import Particle
-from pso.updateposition import DefaultPositionUpdate
-from pso.updateposition import AverageVelocityBased
-from pso.updatevelocity import DefaultVelocityUpdate
-from pso.updatevelocity import LinearReduction
-from pso.updatevelocity import ConstrictionFactor
+from pso.updateposition import DefaultPositionUpdate, AverageVelocityBased
+from pso.updatevelocity import DefaultVelocityUpdate, LinearReduction, ConstrictionFactor
 
 class SearchSpace():
 

@@ -1,5 +1,5 @@
 import numpy as np
-from pso.pso import SearchSpace
+from pso import SearchSpace
 from util.benchmarks import dejong_sphere
 from util.benchmarks import quadratic_noise
 from util.benchmarks import rastrigin_function
@@ -13,7 +13,6 @@ if __name__ == "__main__":
                         dimensions=10,
                         bounds=[-5.12,5.12],
                         velocityStrategy="CONSTRICTION",
-                        positionStrategy="hammilton"
                         )
 
     pso.run()
