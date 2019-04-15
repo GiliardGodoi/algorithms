@@ -9,7 +9,7 @@ if __name__ == "__main__":
     
     pso = SearchSpace(costFunction=dejong_sphere,
                         nroParticles=100,
-                        maxIteration=500,
+                        maxIteration=1000,
                         dimensions=10,
                         bounds=[-5.12,5.12],
                         velocityStrategy="CONSTRICTION",
@@ -21,11 +21,14 @@ if __name__ == "__main__":
 
     print(pso.get_gbest())
     print('\n\n')
-    print(pso.fitness(pso.gbest))
+    gebest1 = pso.fitness(pso.gbest)
+    print(gebest1)
 
+    pso.initialize_particles()
     # pso.set_updateStrategiesParams(c1=2.05,c2=2.05,c3=0.5,kappa=1,w=0.5,w_min=0.4,w_max=0.9)
     pso.run()
 
     print(pso.get_gbest())
     print('\n\n')
-    print(pso.fitness(pso.gbest))
+    gebest2 = pso.fitness(pso.gbest)
+    print(gebest2)

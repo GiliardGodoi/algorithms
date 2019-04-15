@@ -39,16 +39,13 @@ class SearchSpace():
 
 
     def __setup(self):
-        self.particles = self.__generate_particles()
+        self.initialize_particles()
         self.velocityUpdateStrategy = self.__define_velocityUpdadeStrategy(self.velocityStrategyName)
         self.positionUpdateStrategy = self.__define_positionUpdateStrategy(self.positionStrategyName)
         
         self.is_setup = True
     
     def set_updateStrategiesParams(self,**kwargs):
-        if self.is_setup :
-            self.is_setup = False
-
         if kwargs.get('c1'): 
             self._C1 = kwargs.get('c1')
         if kwargs.get('c2'):
@@ -64,10 +61,12 @@ class SearchSpace():
         if kwargs.get('kappa'):
             self._KAPPA = kwargs.get('kappa')
 
+        if self.is_setup :
+            self.is_setup = False
 
     def __define_velocityUpdadeStrategy(self,strategy="default"):
         strategy = strategy.upper()
-        print(f'Velocity Update Strategy: {strategy}')
+        print(f'Velocity Update Strategy: {strategy}',end='\n')
         if strategy == "CONSTRICTION":
             return ConstrictionFactor(c1=self._C1,c2=self._C2,kappa=self._KAPPA)
         elif strategy == "LINEAR":
@@ -77,26 +76,25 @@ class SearchSpace():
 
     def __define_positionUpdateStrategy(self,strategy="default"):
         strategy = strategy.upper()
-        print(f'Position Update Strategy: {strategy}')
+        print(f'Position Update Strategy: {strategy}',end='\n')
         if strategy == "AVG_VELOCITY":
             return AverageVelocityBased(c3=self._C3)
         else:
             return DefaultPositionUpdate()
 
 
-    def __generate_particles(self):
+    def initialize_particles(self):
         
         bounds = self.bounds
-        tmp_particles = list() # lista temporária
+        self.particles = list() # lista temporária
+        self.gbest = None
 
         for _ in range(0,self.NroParticles):
             position = np.random.uniform(*bounds,size=self.dimensions)
             velocity = np.zeros(shape=self.dimensions)
-            tmp_particles.append(Particle(position,velocity))
+            self.particles.append(Particle(position,velocity))
             if (self.gbest is None) or (self.fitness(position) < self.fitness(self.gbest)):
                 self.gbest = position
-        
-        return tmp_particles
 
     def __update_particle(self,particle,**kwargs):
         iteration = kwargs.get('iteration')
@@ -123,7 +121,7 @@ class SearchSpace():
         iteration = 0
 
         while iteration < self.MaxIteration:
-            print(f'Iteration: {iteration}',end='\r')
+            # print(f'Iteration: {iteration}',end='\r')
             for p in self.particles:
                 if self.fitness(p.position) < self.fitness(p.pbest_position) :
                     p.pbest_position = p.position
@@ -135,6 +133,3 @@ class SearchSpace():
                 self.__update_particle(p,iteration=iteration)
 
             iteration += 1
-
-        # self.is_setup = False
-        self.particles = self.__generate_particles()
