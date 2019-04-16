@@ -1,4 +1,4 @@
-from genetic.gabinary import random_population, mutation, crossover, selection, normalize
+from genetic.ga_binary import random_population, mutation, crossover, selection, normalize
 
 def bit2number(bitString):
     return int(bitString,2)
@@ -19,7 +19,7 @@ if __name__ == "__main__":
     SUB_LENGHT = 7
     QTD_VARIABLES = 3 # X, Y, Z
     OBJETIVO = 52
-    MAX_REPEAT = 1000
+    MAX_REPEAT = 2000
 
     def evaluate_population(population):
         for chromosome in population:

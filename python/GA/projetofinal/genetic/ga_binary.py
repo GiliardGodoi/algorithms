@@ -38,6 +38,7 @@ def cutting_points(sizeChromosome):
     return min(chop1,chop2),max(chop1,chop2)
 
 def crossing_chromosome(chromo1, chromo2):
+    
     idx1, idx2 = cutting_points(len(chromo1))
 
     newOne = chromo1[:idx1] + chromo2[idx1:idx2] + chromo1[idx2:]
