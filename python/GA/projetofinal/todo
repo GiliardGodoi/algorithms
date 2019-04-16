@@ -45,3 +45,7 @@
     - real
         - poucos gentes -> pouca diversidade
         - conjunto maior de possibilidades
+
+[x] Implementar a classe Chromosome
+[x] Implementar as operações sobre o cromossomo
+[] Implementar o cenário para otmiziação da função dejong

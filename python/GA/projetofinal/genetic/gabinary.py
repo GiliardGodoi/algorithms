@@ -1,5 +1,5 @@
-import random
 from genetic import Chromosome
+import random
 
 def random_binary_genes(size=0):
     tmp = [ random.choice(['0','1']) for _ in range(0,size) ]
@@ -26,9 +26,7 @@ def mutation(chromosome,probability=0.1):
         if p < probability:
             genes[i] = flip_bit(genes[i])
 
-    chromosome.genes = ''.join(genes)
-
-    return chromosome
+    return ''.join(genes)
 
 
 ## CROSSOVER operations
@@ -74,7 +72,7 @@ def select_by_wheel(population,totalFitness):
     return chromosome
 
 def selection(population):
-    totalFitness = sum([chromosome.score for chromosome in population])
+    totalFitness = sum([chromosome.fitness for chromosome in population])
 
     new_population = list()
     size = len(population)
@@ -88,7 +86,7 @@ def selection(population):
 ## NORMALIZATION 
 
 def normalize(population): 
-    return normalize_by_ranking(population)
+    return normalize_by_windowing(population)
 
 def normalize_by_ranking(population):
     K = 2 * len(population) # K = sum(map(lambda i: i['fitness'],population),0)
