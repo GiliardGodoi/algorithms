@@ -35,3 +35,13 @@
 [x] Passar as funções de benchmark para um arquivo em separado
 [x] SearchSpace será responsável por atualizar a posição e velocidade das partículas e decidirá qual estratégia **utilizar**
 [x] Calcular a velocidade média e desvio médio (de acordo com o artigo) na classe de atualização pela média das velocidades
+
+## Genetic Algorithm
+
+[] Decidir qual a codificação para o chromosomo:
+    - binário:
+        - maior diversidade dado que temos poucos parâmetros: c1, c2, c3, w, 
+        - limitação dos valores continuos a serem trabalhados
+    - real
+        - poucos gentes -> pouca diversidade
+        - conjunto maior de possibilidades
