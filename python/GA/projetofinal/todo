@@ -21,8 +21,8 @@
 #### Refactoring
 
 [] Limitar o valor das velocidades
-[] Printar a estratégia correta, mesmo que se passe uma estratégia inexistente
-[] Definir os parâmetros das estratégias a partir do arquivo main.py
+[x] Printar a estratégia correta, mesmo que se passe uma estratégia inexistente (de uma maneira porca, mas tá ai)
+[x] Definir os parâmetros das estratégias a partir do arquivo main.py
 [x] Definir as estratégias de atualização a partir do arquivo main.py
 [x] Colocar o módulo pso em um pacote (diretorio) separado
 [x] Refatorar a estratégia de atualização da posição baseada na media da velocidade
