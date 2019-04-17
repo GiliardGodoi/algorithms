@@ -38,7 +38,7 @@ class SearchSpace():
         self.positionUpdateStrategy = None
 
 
-    def __setup(self):
+    def setup(self):
         self.initialize_particles()
         self.velocityUpdateStrategy = self.__define_velocityUpdadeStrategy(self.velocityStrategyName)
         self.positionUpdateStrategy = self.__define_positionUpdateStrategy(self.positionStrategyName)
@@ -86,6 +86,7 @@ class SearchSpace():
     def initialize_particles(self):
         
         bounds = self.bounds
+        del self.particles
         self.particles = list() # lista temporária
         self.gbest = None
 
@@ -116,7 +117,7 @@ class SearchSpace():
 
     def run(self):
         if not self.is_setup:
-            self.__setup()
+            self.setup()
 
         iteration = 0
 
