@@ -1,5 +1,5 @@
 from pso import SearchSpace
-from util.benchmarks import rastrigin_noncontinuous as fitness
+from util.benchmarks import dejong_sphere as fitness
 from util.visualization import line_plot
 import matplotlib.pyplot as plt
 import numpy as np
@@ -8,14 +8,13 @@ import time
 if __name__ == "__main__":
     
     pso = SearchSpace(costFunction=fitness,
-                        nroParticles=100,
-                        maxIteration=1000,
-                        dimensions=50,
-                        bounds=[-1.28,1.28],
-                        velocityStrategy="CONSTRICTION"
+                        nroParticles=50,
+                        maxIteration=10000,
+                        dimensions=20,
+                        bounds=[-5.12,5.12],                
                     )
 
-    pso.set_updateStrategiesParams(c1=2.05,c2=2.05,kappa=1,w=0.5)
+    pso.set_updateStrategiesParams(c1=0.05,c2=0.5,kappa=1,w=0.5)
     pso.setup() # Inicilaiza as particulas e as estratégias
 
     MAX_ITERATION =  5
