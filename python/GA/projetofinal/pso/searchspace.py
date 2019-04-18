@@ -39,7 +39,6 @@ class SearchSpace():
 
 
     def setup(self):
-        self.initialize_particles()
         self.velocityUpdateStrategy = self.__define_velocityUpdadeStrategy(self.velocityStrategyName)
         self.positionUpdateStrategy = self.__define_positionUpdateStrategy(self.positionStrategyName)
         
