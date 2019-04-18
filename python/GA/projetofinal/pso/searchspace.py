@@ -67,23 +67,23 @@ class SearchSpace():
         strategy = strategy.upper()
         
         if strategy == "CONSTRICTION":
-            print(f'Velocity Update Strategy: {strategy}',end='\n')
+            # print(f'Velocity Update Strategy: {strategy}',end='\r')
             return ConstrictionFactor(c1=self._C1,c2=self._C2,kappa=self._KAPPA)
         elif strategy == "LINEAR":
-            print(f'Velocity Update Strategy: {strategy}',end='\n')
+            # print(f'Velocity Update Strategy: {strategy}',end='\r')
             return LinearReduction(w_min=self._W_MIN,w_max=self._W_MAX,c1=self._C1,c2=self._C2,max_iteration=self.MaxIteration)
         else :
-            print(f'Velocity Update Strategy: DEFAULT',end='\n')
+            # print(f'Velocity Update Strategy: DEFAULT',end='\r')
             return DefaultVelocityUpdate(c1=self._C1,c2=self._C2,w=self._W)
 
     def __define_positionUpdateStrategy(self,strategy="default"):
         strategy = strategy.upper()
         
         if strategy == "AVG_VELOCITY":
-            print(f'Position Update Strategy: {strategy}',end='\n')
+            # print(f'Position Update Strategy: {strategy}',end='\r')
             return AverageVelocityBased(c3=self._C3)
         else:
-            print(f'Position Update Strategy: DEFAULT',end='\n')
+            # print(f'Position Update Strategy: DEFAULT',end='\r')
             return DefaultPositionUpdate()
 
 
