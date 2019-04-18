@@ -7,15 +7,16 @@ from util.benchmarks import griewank_function
 
 if __name__ == "__main__":
     
-    pso = SearchSpace(costFunction=dejong_sphere,
+    pso = SearchSpace(costFunction=griewank_function,
                         nroParticles=100,
-                        maxIteration=1000,
-                        dimensions=10,
+                        maxIteration=2000,
+                        dimensions=20,
                         bounds=[-5.12,5.12],
                         velocityStrategy="CONSTRICTION",
                     )
 
     pso.set_updateStrategiesParams(c1=2.05,c2=2.05,c3=0.5,kappa=1,w=0.5,w_min=0.4,w_max=0.9)
+    pso.initialize_particles()
     
     pso.run()
 
