@@ -19,11 +19,8 @@ def convert2real(number,k_bits=3):
     return X_inf + (delta/bits_factor) * number
 
 def decode_chromosome(chromosome,dimensions=N_dimensions):
-    
     lenght = len(chromosome) // dimensions
-
     variables = list()
-
     for i in range(0,len(chromosome), lenght):
         seq = chromosome[i:i+lenght]
         real = convert2real(binario2number(seq),len(seq))
@@ -33,8 +30,8 @@ def decode_chromosome(chromosome,dimensions=N_dimensions):
 
 
 def dejong_function(variables):
-    mapped = map(lambda x: pow(x,2), variables)
-    return sum(list(mapped))
+    powered = [pow(x,2) for x in variables]
+    return sum(powered)
 
 def fitness(chromosome):
     return 1 / (dejong_function(decode_chromosome(chromosome)) + 1)
@@ -85,8 +82,8 @@ def crossover(population):
 
     for _ in range(0,len(population),2):
         old_p1, old_p2 = random.sample(population,k=2)
-        old_chromo1 = old_p1['chromosome']
-        old_chromo2 = old_p2['chromosome']
+        old_chromo1 = old_p1.get('chromosome',None)
+        old_chromo2 = old_p2.get('chromosome',None)
         
         new_chromo1, new_chromo2 = crossing_chromosome(old_chromo1,old_chromo2)
 

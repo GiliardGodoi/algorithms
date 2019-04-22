@@ -1,27 +1,20 @@
 import random
-from functools import reduce
-
-N_dimensions = 20
-rounded_by = 3
-X_inf = -5.12
-X_sup = 5.12
 
 def dejong_function(variables):
-    mapped = map(lambda x: pow(x,2), variables)
-    return sum(list(mapped))
+    return sum([pow(x,2) for x in variables ])
 
 def fitness(chromosome):
     variables = chromosome # neste caso o cromossomo representa diretamente as variáveis de interesse
     return 1 / (dejong_function(variables) + 1)
 
-def random_chromosome(length=N_dimensions):    
+def random_chromosome(length):    
     return [ random.uniform(X_inf,X_sup) for _ in range(0, length)]
 
-def generate_random_population(population_size=10):
+def random_population(population_size=10,chromosome_size=3):
     population = list()
     for _ in range(0,population_size):
         chromo = dict()
-        chromo['chromosome'] = random_chromosome()
+        chromo['chromosome'] = random_chromosome(length=chromosome_size)
         chromo['fitness'] = fitness(chromo['chromosome'])
         population.append(chromo)
 
@@ -110,7 +103,7 @@ def mutation(chromosome):
 
 
 def mutation_simple_random(chromosome, probability=0.2):
-    for i,_ in enumerate(chromosome) :
+    for i in range(0,len(chromosome)):
         p = random.random()
         if p <= probability:
             chromosome[i] = random.uniform(X_inf,X_sup)
@@ -127,16 +120,13 @@ def selection_by_wheel(population):
         roulette wheel selection (let's keep the things easy, though)
         thanks for the internet: https://stackoverflow.com/questions/177271/roulette-selection-in-genetic-algorithms
     '''
-    fitnessSum = reduce(lambda x,y : x + y,[i['fitness'] for i in population])
-
+    fitnessSum = sum([i['fitness'] for i in population])
     new_population = list()
-
     for _ in population :
         seleted_chromosome = spinning_the_wheel(population,fitnessSum)
         new_population.append(seleted_chromosome)
 
     return new_population
-
 
 def spinning_the_wheel(population,totalFitness):
     p = random.uniform(0,totalFitness)
@@ -148,17 +138,13 @@ def spinning_the_wheel(population,totalFitness):
     return individual
 
 def selection_by_contest(population): 
-
     new_population = list()
-    __get = lambda x : x['fitness']
-    
     for _ in population:
         c1, c2 = random.sample(population,k=2)
-        new_chromo = c1 if __get(c1) >= __get(c2) else c2
+        new_chromo = c1 if c1.get("fitness") >= c2.get("fitness") else c2
         new_population.append(new_chromo)
 
     return new_population
-       
 
 def elitsm(new_population,old_population):
     size = len(old_population)
@@ -174,17 +160,19 @@ if __name__ == "__main__":
     populationSize = 100 
     iteration = 0
     MAX_REPEAT = 1000
+    N_dimensions = 20
+    rounded_by = 3
+    X_inf = -5.12
+    X_sup = 5.12
+    
+    population = random_population(population_size=populationSize,chromosome_size=N_dimensions)
 
-    population = generate_random_population(populationSize)
     print_out(population)
 
     print("\n\n\n")
 
     while (iteration < MAX_REPEAT):
         population = sorted(population,key=lambda item: item['fitness'])
-        # print('Iteration::  ', iteration)
-        # print_out(population)
-
         selected = selection(population)
         population = elitsm(crossover(selected),population)
         iteration += 1
@@ -192,5 +180,3 @@ if __name__ == "__main__":
     population = sorted(population,key=lambda item: item['fitness'])
     print('Iteration::  ', iteration)
     print_out(population)
-        
-
