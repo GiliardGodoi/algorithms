@@ -1,1 +1,1 @@
-# Pesquisa em métodos para otimização de parâmetros em algoritmos evolutivos: estudo de caso sobre o PSO
+# Otimização de parâmetros em algoritmos evolutivos: um estudo de caso sobre o PSO

@@ -1,6 +1,7 @@
 import numpy as np
-
 from pso.particle import Particle
+from pso.updateposition import DefaultPositionUpdate, AverageVelocityBased
+from pso.updatevelocity import DefaultVelocityUpdate, LinearReduction, ConstrictionFactor
 
 class SearchSpace():
 
@@ -16,7 +17,7 @@ class SearchSpace():
         assert type(nroParticles) is int
         assert type(maxIteration) is int
         assert type(dimensions) is int
-        assert callable(costFunction), "costFunction precisa ser uma função"
+        assert callable(costFunction), "costFunction must be a function"
         assert type(bounds) is list
 
         # somente atribuição de variáveis passadas para o construtor
@@ -25,15 +26,44 @@ class SearchSpace():
         self.MaxIteration = maxIteration
         self.dimensions = dimensions
         self.bounds = bounds
+
+        self.velocityStrategyName = kwargs.get("velocityStrategy","default")
+        self.positionStrategyName = kwargs.get("positionStrategy","default")
         
         # somente declaração de variáveis
         self.is_setup = False
         self.gbest = None
         self.particles = None
+        self.velocityUpdate = None
+        self.positionUpdate = None
+
+    def __define_velocityUpdadeStrategy(self,strategy="default"):
+        strategy = strategy.upper()
+        
+        if strategy == "CONSTRICTION":
+            # print(f'Velocity Update Strategy: {strategy}',end='\r')
+            return ConstrictionFactor(c1=self._C1,c2=self._C2,kappa=self._KAPPA)
+        elif strategy == "LINEAR":
+            # print(f'Velocity Update Strategy: {strategy}',end='\r')
+            return LinearReduction(w_min=self._W_MIN,w_max=self._W_MAX,c1=self._C1,c2=self._C2,max_iteration=self.MaxIteration)
+        else :
+            # print(f'Velocity Update Strategy: DEFAULT',end='\r')
+            return DefaultVelocityUpdate(c1=self._C1,c2=self._C2,w=self._W)
+
+    def __define_positionUpdateStrategy(self,strategy="default"):
+        strategy = strategy.upper()
+        
+        if strategy == "AVG_VELOCITY":
+            # print(f'Position Update Strategy: {strategy}',end='\r')
+            return AverageVelocityBased(c3=self._C3)
+        else:
+            # print(f'Position Update Strategy: DEFAULT',end='\r')
+            return DefaultPositionUpdate()
 
 
     def setup(self):
-        
+        self.velocityUpdate = self.__define_velocityUpdadeStrategy(self.velocityStrategyName)
+        self.positionUpdate = self.__define_positionUpdateStrategy(self.positionStrategyName)
         self.is_setup = True
     
     def set_updateStrategiesParams(self,**kwargs):
@@ -59,18 +89,28 @@ class SearchSpace():
         
         bounds = self.bounds
         del self.particles
-        self.particles = list() # lista temporária
+        self.particles = list()
         self.gbest = None
 
         for _ in range(0,self.NroParticles):
             position = np.random.uniform(*bounds,size=self.dimensions)
-            velocity = np.zeros(shape=self.dimensions)
-            self.particles.append(Particle(position,velocity))
-            if (self.gbest is None) or (self.fitness(position) < self.fitness(self.gbest)):
-                self.gbest = position
+            velocity = np.random.uniform(*bounds,size=self.dimensions)
+            fitness = self.costFunction(position)
+
+            particle = Particle(position,velocity,fitness=fitness)
+            
+            if self.gbest is None :
+                self.gbest = Particle(position,velocity,fitness=fitness)
+            elif fitness < self.gbest.fitness :
+                self.gbest = Particle(position,velocity,fitness=fitness)
+
+            self.particles.append(particle)
 
     def fitness(self,particle):
-        return self.costFunction(particle.position)
+        score = self.costFunction(particle.position)
+        # atribuir 'score' a 'particle'
+        particle.fitness = score
+        return score
 
     def run(self):
         if not self.is_setup:
@@ -79,41 +119,49 @@ class SearchSpace():
         iteration = 0
 
         while iteration < self.MaxIteration:
-            # print(f'Iteration: {iteration}',end='\r')
+            print(f'Iteration: {iteration}',end='\r')
             for p in self.particles:
-                self.updateVelocity(p,self.gbest.position)
-                self.updatePosition(p)
+                self.velocityUpdate.update(p,self.gbest.position)
+                self.positionUpdate.update(p)
+                # print(p,p.fitness,p.pbest_fitness)
                 self.fitness(p)
 
             for p in self.particles:
-                if self.fitness(p.position) < self.fitness(p.pbest_position) :
+                if p.fitness < p.pbest_fitness :
                     p.pbest_position = p.position
+                    p.pbest_fitness = p.fitness
+                    # print(f'Atualizando pbest: {p} -> {p.pbest_fitness}')
 
-                    if (self.fitness(p.position) < self.fitness(self.gbest)):
-                        self.gbest = p.position
-            
-
+                    if p.fitness < self.gbest.fitness :
+                        self.gbest = Particle(position=p.position,velocity=p.velocity,fitness=p.fitness)
+                        # print(f'Atualizando gbest: {self.gbest} -> {self.gbest.fitness}')
+        
             iteration += 1
 
-    def updatePosition(self,particle):
-        particle.position =  np.add(particle.velocity,particle.position)
+        return self.gbest
 
-    def updateVelocity(self,particle,gbest):
-        position = particle.position
-        velocity = particle.velocity
-        pbest = particle.pbest_position
+    # def updatePosition(self,particle):
+    #     particle.position =  np.add(particle.velocity,particle.position)
 
-        r1 = np.random.uniform(0,1,size=len(position))
-        r2 = np.random.uniform(0,1,size=len(position))
+    # def updateVelocity(self,particle,gbest):
+    #     position = particle.position
+    #     velocity = particle.velocity
+    #     pbest = particle.pbest_position
 
-        w = self._W
-        c1 = self._C1
-        c2 = self._C2
+    #     r1 = np.random.uniform(0,1,size=len(position))
+    #     r2 = np.random.uniform(0,1,size=len(position))
 
-         ## cognitive = c1 * r1 * (pbest - position)
-        cognitive = np.multiply(c1,r1,np.subtract(pbest,position),dtype=np.float64)
-        ## social = c2 * r2 * (gbest - position)
-        social = np.multiply(c2,r2,np.subtract(gbest,position),dtype=np.float64)
+    #     w = self._W * np.ones(len(velocity))
+    #     c1 = self._C1 * np.ones(len(velocity))
+    #     c2 = self._C2 * np.ones(len(velocity))
 
-        ##particle.velocity = w * velocity + cognitive + social
-        particle.velocity = np.add(np.multiply(w,velocity),cognitive,social,dtype=np.float64)
+    #     cognitive = c1 * r1 * (pbest - position)
+    #     # cognitive = np.multiply(c1,r1,np.subtract(pbest,position),dtype=np.float64)
+    #     social = c2 * r2 * (gbest - position)
+    #     # social = np.multiply(c2,r2,np.subtract(gbest,position),dtype=np.float64)
+
+    #     # assert any(social), "social não pode ser igual a zero"
+    #     # assert all(cognitive), "cognitive não pode ser igual a zero"
+
+    #     particle.velocity = (w * velocity) + cognitive + social
+    #     # particle.velocity = np.add(np.multiply(w,velocity),cognitive,social,dtype=np.float64)

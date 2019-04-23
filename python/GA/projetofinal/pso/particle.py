@@ -29,7 +29,7 @@ class Particle(object):
     def position(self,value):
         assert len(value) == len(self.__position), f'dimensões necessária: {len(self.__position)}'
         if not type(value) is np.ndarray:
-            value = np.array(value,dtype=np.float64)
+            value = np.array(value,dtype=np.float64,copy=True)
         self.__position = value
 
     @property
@@ -40,7 +40,7 @@ class Particle(object):
     def velocity(self,value):
         assert len(value) == len(self.__velocity), f'dimensões necessária: {len(self.__velocity)}'
         if not type(value) is np.ndarray:
-            value = np.array(value,dtype=np.float64)
+            value = np.array(value,dtype=np.float64,copy=True)
         self.__velocity = value
 
     @property
@@ -50,7 +50,8 @@ class Particle(object):
     @fitness.setter
     def fitness(self,value):
         if value < self.__pbest_fitness:
-            print("Update pbest")
+            pass
+            # print("Update pbest")
         self.__fitness = value
 
     @property
@@ -60,9 +61,20 @@ class Particle(object):
     @pbest_position.setter
     def pbest_position(self,value):
         if type(value) is np.ndarray:
-            self.__pbest_position = np.array(value)
+            self.__pbest_position = np.array(value,copy=True)
         elif type(value) is Particle:
-            print("deu certo")
+            raise TypeError("Atribuindo Particle para pbest")
+
+    @property
+    def pbest_fitness(self):
+        return self.__pbest_fitness
+
+    @pbest_fitness.setter
+    def pbest_fitness(self,value):
+        if value <= self.__pbest_fitness :
+            self.__pbest_fitness = copy.copy(value)
+        else:
+            raise TypeError("value needs to be smaller than current pbest_fitness")
 
     def checkPBest(self):
         return self.__pbest_fitness < self.__fitness
