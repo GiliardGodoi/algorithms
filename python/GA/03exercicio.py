@@ -45,13 +45,16 @@ def mutation(chromosome):
     return __mutation_2(chromosome)
 
 def __mutation_1(chromosome,probability=0.1):
+    '''
+        Garante que realiza a mutação em um único bit se random() < probability.
+    '''
     p = random.random()
     if p > probability :
         return chromosome # It don't apply mutation
 
     change_bit = lambda bit : '1' if bit == '0' else '0'
 
-    index = random.randrange(0,len(chromosome))
+    index = random.randrange(0,len(chromosome)) # retorna um único inteiro  entre [a,b) 
     chromo = list(chromosome)
     chromo[index] = change_bit(chromo[index])
 
@@ -122,13 +125,13 @@ def selection(population):
 
     return new_population
 
-def normalize(population): 
+def normalize(population):
     return __by_ranking(population)
     # return __by_windowing(population,value)
 
 def __by_ranking(population):
     K = 2 * len(population) # K = sum(map(lambda i: i['fitness'],population),0)
-    delta = 10 # delta = int(K/len(population))
+    delta = 2 # delta = int(K/len(population))
     population = sorted(population,key=lambda item : item['fitness'],reverse=False)
     population[0]['fitness'] = K
     for i in range(1,len(population)):

@@ -13,9 +13,10 @@ def fitness(gene):
 # binary = bin(5) # 0b101
 # integer = int(binary,2)
 def bit2number(bitString):
-
     tmp = [ base * (2**int(indice)) for indice,base in enumerate( map(int,bitString[::-1])) ]
     return sum(tmp)
+    # bitString = ''.join([str(i) for i in bitString])
+    # return int(bitString,2)
 
 def translate_gene(gene,gene_size=9):
     if not gene_size == len(gene):
@@ -141,7 +142,7 @@ if __name__ == "__main__":
         # criterio de parada
         if ( evaluate(population) or (numberOfIteration >= numberOfMaxIterarion) ) :
             break
-        
+
         selected = selection(population)
         population = crossover(selected)
         numberOfIteration += 1
@@ -154,5 +155,3 @@ if __name__ == "__main__":
     print('\n')
 
     print_population([chromosome])
-
-    

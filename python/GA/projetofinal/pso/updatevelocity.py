@@ -24,10 +24,13 @@ class DefaultVelocityUpdate(VelocityUpdateStrategy):
         c2 = self.C2
         w = self.W
 
-        cognitive = c1 * r1 * (pbest - position)
-        social = c2 * r2 * (gbest - position)
+        ## cognitive = c1 * r1 * (pbest - position)
+        cognitive = np.multiply(c1,r1,np.subtract(pbest,position),dtype=np.float64)
+        ## social = c2 * r2 * (gbest - position)
+        social = np.multiply(c2,r2,np.subtract(gbest,position),dtype=np.float64)
 
-        particle.velocity = w * velocity + cognitive + social
+        ##particle.velocity = w * velocity + cognitive + social
+        particle.velocity = np.add(np.multiply(w,velocity),cognitive,social,dtype=np.float64)
     
 
 class ConstrictionFactor(VelocityUpdateStrategy):
@@ -53,10 +56,13 @@ class ConstrictionFactor(VelocityUpdateStrategy):
         r1 = np.random.uniform(0,1,size=len(position))
         r2 = np.random.uniform(0,1,size=len(position))
 
-        cognitive = c1 * r1 * (pbest - position)
-        social = c2 * r2 * (gbest - position)
+        ## cognitive = c1 * r1 * (pbest - position)
+        cognitive = np.multiply(c1,r1,np.subtract(pbest,position),dtype=np.float64)
+        ## social = c2 * r2 * (gbest - position)
+        social = np.multiply(c2,r2,np.subtract(gbest,position),dtype=np.float64)
 
-        particle.velocity = chi * (velocity + cognitive + social)
+        ## particle.velocity = chi * (velocity + cognitive + social)
+        particle.velocity = np.multiply(chi,np.add(velocity,cognitive,social,dtype=np.float64),dtype=np.float64)
 
 
 class LinearReduction(VelocityUpdateStrategy):
@@ -88,7 +94,10 @@ class LinearReduction(VelocityUpdateStrategy):
         r1 = np.random.uniform(0,1,size=len(position))
         r2 = np.random.uniform(0,1,size=len(position))
 
-        cognitive = c1 * r1 * (pbest - position)
-        social = c2 * r2 * (gbest - position)
+        ## cognitive = c1 * r1 * (pbest - position)
+        cognitive = np.multiply(c1,r1,np.subtract(pbest,position),dtype=np.float64)
+        ## social = c2 * r2 * (gbest - position)
+        social = np.multiply(c2,r2,np.subtract(gbest,position),dtype=np.float64)
 
-        particle.velocity = W_i * velocity + cognitive + social
+        ##particle.velocity = W_i * velocity + cognitive + social
+        particle.velocity = np.add(np.multiply(W_i,velocity,dtype=np.float64),cognitive,social,dtype=np.float64)
