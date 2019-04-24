@@ -44,8 +44,8 @@ class Particle:
 
 # =======================================================
 
-def function_sphere(x):
-    return sum(map(lambda i: pow(i,2),x))
+def function_sphere(variables):
+    return sum([pow(x,2) for x in variables])
 
 if __name__ == "__main__":
     
