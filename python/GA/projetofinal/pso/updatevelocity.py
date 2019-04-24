@@ -20,17 +20,17 @@ class DefaultVelocityUpdate(VelocityUpdateStrategy):
         r1 = np.random.uniform(0,1,size=len(position))
         r2 = np.random.uniform(0,1,size=len(position))
 
-        c1 = self.C1
-        c2 = self.C2
-        w = self.W
+        c1 = self.C1 * np.ones(len(velocity))
+        c2 = self.C2 * np.ones(len(velocity))
+        w = self.W * np.ones(len(velocity))
 
-        ## cognitive = c1 * r1 * (pbest - position)
-        cognitive = np.multiply(c1,r1,np.subtract(pbest,position),dtype=np.float64)
-        ## social = c2 * r2 * (gbest - position)
-        social = np.multiply(c2,r2,np.subtract(gbest,position),dtype=np.float64)
+        cognitive = c1 * r1 * (pbest - position)
+        # cognitive = np.multiply(c1,r1,np.subtract(pbest,position),dtype=np.float64)
+        social = c2 * r2 * (gbest - position)
+        # social = np.multiply(c2,r2,np.subtract(gbest,position),dtype=np.float64)
 
-        ##particle.velocity = w * velocity + cognitive + social
-        particle.velocity = np.add(np.multiply(w,velocity),cognitive,social,dtype=np.float64)
+        particle.velocity = (w * velocity) + cognitive + social
+        # particle.velocity = np.add(np.multiply(w,velocity),cognitive,social,dtype=np.float64)
     
 
 class ConstrictionFactor(VelocityUpdateStrategy):
@@ -48,8 +48,8 @@ class ConstrictionFactor(VelocityUpdateStrategy):
         
         kappa = self.KAPPA
         phi = self.PHI
-        c1 = self.C1
-        c2 = self.C2
+        c1 = self.C1 * np.ones(len(velocity))
+        c2 = self.C2 * np.ones(len(velocity))
 
         chi = (2 * kappa) / abs((2 - phi - np.sqrt(pow(phi,2) - 4 )))
 
@@ -84,20 +84,20 @@ class LinearReduction(VelocityUpdateStrategy):
         k_max = self.K_MAX
         w_max = self.W_MAX
         w_min = self.W_MIN
-        c1 = self.C1
-        c2 = self.C2
+        c1 = self.C1 * np.ones(len(velocity))
+        c2 = self.C2 * np.ones(len(velocity))
 
-        k = kwargs.get('iteration')
-
+        k = kwargs.get('iteration', 0)
         W_i = w_max - (k * ( (w_max - w_min) / k_max))
+        W_i *= np.ones(len(velocity))
 
         r1 = np.random.uniform(0,1,size=len(position))
         r2 = np.random.uniform(0,1,size=len(position))
 
-        ## cognitive = c1 * r1 * (pbest - position)
-        cognitive = np.multiply(c1,r1,np.subtract(pbest,position),dtype=np.float64)
-        ## social = c2 * r2 * (gbest - position)
-        social = np.multiply(c2,r2,np.subtract(gbest,position),dtype=np.float64)
+        cognitive = c1 * r1 * (pbest - position)
+        # cognitive = np.multiply(c1,r1,np.subtract(pbest,position),dtype=np.float64)
+        social = c2 * r2 * (gbest - position)
+        # social = np.multiply(c2,r2,np.subtract(gbest,position),dtype=np.float64)
 
-        ##particle.velocity = W_i * velocity + cognitive + social
-        particle.velocity = np.add(np.multiply(W_i,velocity,dtype=np.float64),cognitive,social,dtype=np.float64)
+        particle.velocity = (W_i * velocity) + cognitive + social
+        # particle.velocity = np.add(np.multiply(W_i,velocity,dtype=np.float64),cognitive,social,dtype=np.float64)
