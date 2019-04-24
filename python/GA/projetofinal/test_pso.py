@@ -1,8 +1,8 @@
 import numpy as np
 from pso import SearchSpace
-# from util.benchmarks import dejong_sphere as costFitness
+from util.benchmarks import dejong_sphere as costFitness
 # from util.benchmarks import quadratic_noise as costFitness
-from util.benchmarks import rastrigin_function as costFitness
+# from util.benchmarks import rastrigin_function as costFitness
 # from util.benchmarks import griewank_function as costFitness
 # import time
 
