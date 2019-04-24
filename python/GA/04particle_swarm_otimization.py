@@ -44,7 +44,6 @@ class Particle:
 
 # =======================================================
 
-
 def function_sphere(variables):
     return sum([pow(x,2) for x in variables])
 
