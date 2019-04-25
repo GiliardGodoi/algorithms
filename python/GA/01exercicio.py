@@ -129,7 +129,7 @@ if __name__ == "__main__":
 
     populationSize = 20
     numberOfIteration = 0
-    numberOfMaxIterarion = 100
+    numberOfMaxIterarion = 26 # 
 
     population = generate_random_population(populationSize)
 
