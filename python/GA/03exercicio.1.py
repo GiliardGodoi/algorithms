@@ -3,7 +3,7 @@ from logger import Logger
 from visualization import line_plot
 
 Z_OBJETIVO = 52
-arraybit_lenght = 9 # array's size to represent a only variable (X or Y or Z)
+arraybit_lenght = 7 # array's size to represent a only variable (X or Y or Z)
 QTD_VARIABLES = 3 # quantidade de variáveis na função objetivo (x,y,w) 3
 
 def function(x,y,w):
@@ -17,7 +17,8 @@ def number2bit(number):
 
 def decode_chromo(chromosome,lenght=arraybit_lenght):
     seq_chromo = [chromosome[i:(i+lenght)] for i in range(0,len(chromosome),lenght) ]
-    return tuple([bit2number(seq) for seq in seq_chromo])
+    mapNumbers = map(bit2number,seq_chromo)
+    return tuple(mapNumbers)
 
 def fitness(chromosome):
     return abs(Z_OBJETIVO - function(*decode_chromo(chromosome)))
@@ -124,9 +125,9 @@ def selection(population):
 
     return new_population
 
-# def normalize(population):
-#     return __by_ranking(population)
-#     # return __by_windowing(population)
+def normalize(population):
+    return __by_ranking(population)
+    # return __by_windowing(population,value)
 
 def __by_ranking(population):
     K = 2 * len(population) # K = sum(map(lambda i: i['fitness'],population),0)
@@ -139,7 +140,7 @@ def __by_ranking(population):
     return population
 
 def __by_windowing(population):
-    value = min([p['fitness'] for p in population]) - 1
+    value = max([p['fitness'] for p in population]) + 1
 
     for p in population:
         p['fitness'] = abs(value - p['fitness'])
@@ -150,8 +151,8 @@ def __by_sigma_scaling(population):
     pass
 
 def isSolved(population):
-    return any([p['fitness'] == 0 for p in population])
-    # return False
+    # return any([p['fitness'] == 0 for p in population])
+    return False
 
 def print_out(population):
     for p in population : print(p['chromosome'],p['fitness'])
@@ -161,15 +162,14 @@ def sorted_pop(population,reversed=False):
 
 logger = Logger()
 
-def main(populationSize=50,max_repeat=150,normalize=None):
+def main(populationSize=50,max_repeat=150):
   
     nroGeneration = 0 # iteration's number
     population = random_population(populationSize)
     
     while (nroGeneration < max_repeat) and (not isSolved(population)) :
         population = sorted_pop(population)
-        if normalize:
-            population = normalize(population)
+        population = normalize(population)
         selected = selection(population)
         population = crossover(selected)
         logger.log([p['fitness'] for p in population])
@@ -181,26 +181,20 @@ def main(populationSize=50,max_repeat=150,normalize=None):
 
 
 if __name__ == "__main__":
-    import seaborn as sns
-    from matplotlib import pyplot as plt
-
+    
     population = main(populationSize=150,max_repeat=1000)
+    data = logger.get_statistics_data()
+
+    line_plot(data=data,_x=range(1,len(data)+1),_y=lambda i: i[0],output_file='media_normalize.png')
+    line_plot(data=data,_x=range(1,len(data)+1),_y=lambda i: i[1],output_file='std_normalize.png')
     
-    fitWithoutNormalized = [p['fitness'] for p in population ]
+    line_plot(data=population,
+        _x=range(1,len(population)+1),
+        _y=lambda i: i['fitness'],
+        output_file='fitness.png',
+        title="Fitness final da população",
+        xlabel="População",
+        ylabel="fitness"
+        )
 
-    population = main(populationSize=150,max_repeat=1000,normalize=__by_ranking)
-    
-    fitByRanking = [p['fitness'] for p in population ]
-
-    population = main(populationSize=150,max_repeat=1000,normalize=__by_windowing)
-    
-    fitByWindowing = [p['fitness'] for p in population ]
-
-    x = list(range(1,len(fitWithoutNormalized)+1))
-
-    plt.plot(x,fitByRanking)
-    plt.plot(x,fitByWindowing)
-    plt.plot(x,fitWithoutNormalized)
-    plt.legend(['Normal. Ranking','Normal. Windowing', 'Sem normalizar'],loc='upper right')
-
-    plt.savefig('exercicio03-comparacao.png')
+    print_out(population)

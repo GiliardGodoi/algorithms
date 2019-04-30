@@ -122,9 +122,10 @@ def evaluate(population):
         return not isSolved
 
 def print_population(population):
-    for p in population: print(p['chromosome'],p['fitness'])
+    # for p in population: print(p['chromosome'],p['fitness'])
+    pass
 
-if __name__ == "__main__":
+def main():
     print('Starting GA algorithm')
 
     populationSize = 20
@@ -136,7 +137,7 @@ if __name__ == "__main__":
     while True:
         population = sorted(population,key=lambda item : item['fitness'] )
         
-        print('Iteration:    ',(numberOfIteration + 1))
+        # print('Iteration:    ',(numberOfIteration + 1))
         print_population(population)
 
         # criterio de parada
@@ -147,11 +148,46 @@ if __name__ == "__main__":
         population = crossover(selected)
         numberOfIteration += 1
 
-    chromosome = population[0]
-    numbers = translate_gene(chromosome['chromosome'])
+    # chromosome = population[0]
+    # numbers = translate_gene(chromosome['chromosome'])
     
-    print('\n')
-    print(numbers,'  ->  ',f(*numbers))
-    print('\n')
+    # print('\n')
+    # print(numbers,'  ->  ',f(*numbers))
+    # print('\n')
 
-    print_population([chromosome])
+    
+
+    return population, numberOfIteration
+
+
+if __name__ == "__main__":
+    from matplotlib import pyplot as plt
+    import seaborn as sns
+    import numpy as np
+
+    NroRepeticao = 1000
+    i = 0
+
+    dadosIteracao = list()
+    conjuntoSolucoes = set()
+
+    while i < NroRepeticao:
+        print(f'iteration: {i}')
+        populacao, iteracao = main()
+        chromosome = populacao[0]
+        solucao = translate_gene(chromosome['chromosome'])
+        dadosIteracao.append(iteracao)
+        conjuntoSolucoes.add(solucao)
+        i += 1
+
+    ax = sns.countplot(dadosIteracao,color='steelblue')
+    ax.set_ylabel('Frequência absoluta')
+    ax.set_xlabel('Iterações necessárias')
+    ax.figure.savefig('figura-01exercicio.png')
+
+    print("Desvio padrão: ",np.std(dadosIteracao))
+    print("Média: ",np.mean(dadosIteracao))
+
+    print(len(conjuntoSolucoes))
+    print(conjuntoSolucoes)
+

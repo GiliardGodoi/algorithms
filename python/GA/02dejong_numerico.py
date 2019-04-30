@@ -43,31 +43,21 @@ def crossover(population,roundedBy=10):
 
 def crossing_cromosome(indv_1, indv_2):
     chromo1, chromo2 = indv_1['chromosome'],indv_2['chromosome']
-
-    # return crossing_discrete(chromo1, chromo2)
+#    return crossing_parametric(chromo1,chromo2)
+#    return crossing_discrete(chromo1, chromo2)
     return crossing_flat(chromo1,chromo2)
-    # return crossing_parametric(chromo1,chromo2)
-
-
-def crossing_discrete(chromo1,chromo2,probability=0.7): 
-    size = 0
-    if len(chromo1) == len(chromo2):
-        size = len(chromo1)
-    else:
-        raise Exception("chromosomes have different size") # they have...
-
+     
+def crossing_discrete(chromo1,chromo2,probability=0.3):
     new_chromo1 = list()
     new_chromo2 = list()
 
-    for i in range(0,size):
-        # binary = random.randint(0,1)
-        binary = 1 if random.random() >= probability else 0
-        if binary == 1 :
-            new_chromo1.append(chromo2[i])
-            new_chromo2.append(chromo1[i])
-        else:
-            new_chromo1.append(chromo1[i])
-            new_chromo2.append(chromo2[i])
+    for i,j in zip(chromo1,chromo2):
+        if random.random() < probability :
+            new_chromo1.append(j)
+            new_chromo2.append(i)
+        else :
+            new_chromo1.append(i)
+            new_chromo2.append(j)
 
     return new_chromo1,new_chromo2
 
@@ -104,35 +94,32 @@ def mutation(chromosome):
 
 def mutation_simple_random(chromosome,limUnder=-5.12,limUpper=5.12,probability=0.2):
     for i in range(0,len(chromosome)):
-        p = random.random()
-        if p <= probability:
-            chromosome[i] = random.uniform(limUnder,limUnder)
+        if random.random() <= probability:
+            chromosome[i] = random.uniform(limUnder,limUpper)
 
     return chromosome
 
 
 def selection(population):
-    # return selection_by_wheel(population)
-    return selection_by_contest(population)
+    return selection_by_wheel(sorted(population,key=lambda item: item['fitness']))
+#    return selection_by_contest(sorted(population,key=lambda item: item['fitness']))
 
 def selection_by_wheel(population):
-    '''
-        roulette wheel selection (let's keep the things easy, though)
-        thanks for the internet: https://stackoverflow.com/questions/177271/roulette-selection-in-genetic-algorithms
-    '''
+
     fitnessSum = sum([i['fitness'] for i in population])
     new_population = list()
-    for _ in population :
-        seleted_chromosome = spinning_the_wheel(population,fitnessSum)
-        new_population.append(seleted_chromosome)
+    i = 0
+    while i < len(population):
+        new_population.append(spinning_the_wheel(population,fitnessSum))
+        i += 1
 
     return new_population
 
 def spinning_the_wheel(population,totalFitness):
-    p = random.uniform(0,totalFitness)
+    r = random.uniform(0,totalFitness)
     for individual in population:
-        p -= individual['fitness']
-        if p <= 0 : 
+        r -= individual['fitness']
+        if r < 0 : 
             break
 
     return individual
@@ -154,38 +141,122 @@ def print_out(population):
     for p in population:
         print('{}   {:.5f}'.format(p['chromosome'][:3],p['fitness']))
 
-def main():
-    print('De Jong Benchmark\t... a \'real\' implementation :P\n\n')
+# if __name__ == "__main__":
+#     print('De Jong Benchmark\t... a \'real\' implementation :P\n\n')
+#     from visualization import line_plot
 
-    populationSize = 100 
-    iteration = 0
-    MAX_REPEAT = 1000
-    N_dimensions = 20
-    rounderNumber = 3
-    X_inf = -5.12
-    X_sup = 5.12
+#     populationSize = 100 
+#     iteration = 0
+#     MAX_REPEAT = 1000
+#     N_dimensions = 10
+#     rounderNumber = 3
+#     X_inf, X_sup = -5.12, 5.12
     
-    population = random_population(population_size=populationSize,
-                                    chromosome_size=N_dimensions,
-                                    limUnder=X_inf,
-                                    limUpper=X_sup
-                                    )
 
-    # print_out(population)
-    # print("\n\n\n")
+#     rodada, MAX_RODADA = 0, 100
+#     historico_melhor_fitness = list()
+#     historico_media_fitness = list()
 
-    while (iteration < MAX_REPEAT):
-        print(f'Iteration: {iteration}',end='\r')
-        population = sorted(population,key=lambda item: item['fitness'])
-        selected = selection(population)
-        new_population = crossover(selected,roundedBy=rounderNumber)
-        population = elitsm(new_population,population)
-        iteration += 1
+#     while rodada < MAX_RODADA:
+#         population = random_population(population_size=populationSize,
+#                                         chromosome_size=N_dimensions,
+#                                         limUnder=X_inf,
+#                                         limUpper=X_sup
+#                                         )
 
-    population = sorted(population,key=lambda item: item['fitness'])
-    # print('Iteration::  ', iteration)
-    # print_out(population)
-    return population
+#         # print_out(population)
+#         # print("\n\n\n")
+#         iteration = 0
+#         while (iteration < MAX_REPEAT):
+#             print(f'Iteration: {iteration}',end='\r')
+#             selected = selection(population)
+#             population = crossover(selected)
+#     #        new_population = crossover(selected,roundedBy=rounderNumber)
+#     #        population = elitsm(new_population,population)
+#             iteration += 1
+
+#         rodada += 1
+
+#         population = sorted(population,key=lambda item: item['fitness'],reverse=True)
+#         print(population[0])
+#         historico_melhor_fitness.append(population[0]['fitness'])
+
+
+
+#     line_plot(data=historico_melhor_fitness,
+#                 _x=range(0,len(historico_melhor_fitness)),
+#                 _y=lambda y: y,
+#                 xlabel="Repetições do algoritmo",
+#                 ylabel="Melhor Fitness alcançado",
+#                 title="Histórico melhor fitness",
+#                 outpu_file="historico-melhor-fitness.png"
+#             )
 
 if __name__ == "__main__":
-    main()
+    print('De Jong Benchmark\t... a \'real\' implementation :P\n\n')
+    from visualization import line_plot
+
+    populationSize = 100
+    iteration = 0
+    MAX_REPEAT = 1000
+    N_dimensions = 10
+    rounderNumber = 3
+    X_inf, X_sup = -5.12, 5.12
+    
+
+    rodada, MAX_RODADA = 0, 100
+    # MANTEM O HISTÓRICO PARA TODAS AS RODADAS
+    historico_fitness_geracao = list()  # Ma
+    historico_melhor_fitness = list() # Mantém os dados do melhor fitness ao final de uma rodada
+    historico_media_fitness = list() # Mantem o dados da média do fitness
+    calcula_media = lambda x : sum(x) / len(x)
+
+    while rodada < MAX_RODADA:
+        population = random_population(population_size=populationSize,
+                                        chromosome_size=N_dimensions,
+                                        limUnder=X_inf,
+                                        limUpper=X_sup
+                                        )
+
+        # print_out(population)
+        # print("\n\n\n")
+        iteration = 0
+        media_geracao_rodada = list()
+        fitness_geracao = list()
+        while (iteration < MAX_REPEAT):
+            print(f'Iteration: {iteration}',end='\r')
+            aptidao = [ dejong_function(p['chromosome']) for p in population]
+            historico_fitness_geracao.append(aptidao)
+            media_geracao_rodada.append(calcula_media([ p['fitness'] for p in population]))
+            selected = selection(population)
+            population = crossover(selected)
+    #        new_population = crossover(selected,roundedBy=rounderNumber)
+    #        population = elitsm(new_population,population)
+            iteration += 1
+
+        rodada += 1
+
+        historico_media_fitness.append(media_geracao_rodada)
+
+        population = sorted(population,key=lambda item: item['fitness'],reverse=True)
+        print(population[0])
+        historico_melhor_fitness.append(population[0])
+
+    line_plot(data=historico_melhor_fitness,
+                _x=range(0,len(historico_melhor_fitness)),
+                _y=lambda y: y['fitness'],
+                xlabel="Repetições do algoritmo",
+                ylabel="Melhor Fitness alcançado",
+                ylim=(0.95,1),
+                title="Histórico melhor fitness",
+                output_file="historico-melhor-fitness.png"
+            )
+
+    ax1 = line_plot(data=historico_media_fitness[5],
+                _x=range(0,len(historico_media_fitness[0])),
+                _y=lambda y: y,
+                xlabel="Gerações",
+                ylabel="Média do fitness",
+                title="Média do fitness por geração",
+                output_file="media-fitness-por-geracao.png"
+            )
