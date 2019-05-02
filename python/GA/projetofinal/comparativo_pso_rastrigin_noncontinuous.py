@@ -131,6 +131,7 @@ if __name__ == "__main__":
     plt.legend(legendas,loc='upper right')
 
     salvar_imagem_em = os.path.join(diretorio_imagens,f'comparativo_{function.__name__}_simulacao.png')
+    plt.savefig(salvar_imagem_em)
 
     data ={
         'PSO-padrao' : DADOS_pso_gbest_padrao,

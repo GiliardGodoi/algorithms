@@ -132,6 +132,8 @@ if __name__ == "__main__":
 
     salvar_imagem_em = os.path.join(diretorio_imagens,f'comparativo_{function.__name__}_simulacao.png')
 
+    plt.savefig(salvar_imagem_em)
+
     data ={
         'PSO-padrao' : DADOS_pso_gbest_padrao,
         'PSO-linear' : DADOS_pso_gbest_linear,
