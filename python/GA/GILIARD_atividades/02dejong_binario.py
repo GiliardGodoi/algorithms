@@ -12,11 +12,11 @@ def number2binario(number):
 def binario2number(binario):
     return int(binario,2)
 
-def convert2real(number,k_bits=3):
-    delta = X_sup - X_inf
-    bits_factor = pow(2,k_bits) - 1
+def convert2real(numero_inteiro,k_bits=3):
+    amplitude_total = X_sup - X_inf
+    quantidade_sub_intervalos = pow(2,k_bits) - 1
 
-    return X_inf + (delta/bits_factor) * number
+    return X_inf + (amplitude_total/quantidade_sub_intervalos) * numero_inteiro
 
 def decode_chromosome(chromosome,dimensions=N_dimensions):
     lenght = len(chromosome) // dimensions
@@ -65,7 +65,7 @@ def crossing_chromosome(chromo1, chromo2):
 
     return new_chromo1,new_chromo2
 
-def mutation(chormosome, probability=0.1):
+def mutation(chormosome, probability=0.2):
     tmp = list()
     for g in chormosome:
         if random.random() <= probability:
@@ -114,9 +114,9 @@ def selection_by_contest(population):
     '''
     selected = list()
     size = len(population) # ira selecionar a mesma quantidade da população inicial
-    metade = (size // 2)
+    # metade = (size // 2)
     for _ in range(0,size): 
-        choosed = random.sample(population[:metade],k=2) # escolhe aleatoriamente dois elementos do conjunto
+        choosed = random.sample(population,k=2) # escolhe aleatoriamente dois elementos do conjunto
         choosed = sorted(choosed,key=lambda item : item['fitness'],reverse=True) # coloca em ordem decrescente
         selected.append(choosed[0]) # seleciona sempre o com o maior fitness
 
@@ -149,7 +149,7 @@ def print_out(population):
         print('{}   {:.5f}'.format(p['chromosome'],p['fitness']))
 
 
-if __name__ == "__main__":
+def main():
     print('De Jong Benchmark\n')
 
     populationSize = 100
@@ -166,14 +166,15 @@ if __name__ == "__main__":
         population = sorted(population,key=lambda item : item['fitness'],reverse=True)
         selected = selection(population)
         population = elitsm(crossover(selected),population)
+        # population = crossover(selected)
         iteration += 1
 
+    return population
+
+if __name__ == "__main__":
+    population = main()
 
     print("\n\n\n")
     population = sorted(population,key=lambda item : item['fitness'])
     print_out(population)
     print(decode_chromosome(population[len(population)-1]['chromosome']))
-        
-
-
-

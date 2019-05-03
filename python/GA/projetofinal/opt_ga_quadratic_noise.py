@@ -11,8 +11,8 @@ from util.visualization import line_plot
 pso = SearchSpace(costFunction=function,
                     nroParticles=50,
                     maxIteration=1000,
-                    dimensions=50,
-                    bounds=[-5.12,5.12],
+                    dimensions=20,
+                    bounds=[-1.28,1.28],
                 )
 DATA = list()
 def fitness(c1,c2,w):
@@ -20,11 +20,11 @@ def fitness(c1,c2,w):
     pso.setup()
     pso.initialize_particles()
     pso.run()
-    DATA.append(pso.get_gbest())
+    DATA.append(pso.gbest.position)
 
-    return function(pso.get_gbest())
+    return function(pso.gbest.position)
 
-def decode_genes(genes,sublenght,limInf=-2,limSup=2):
+def decode_genes(genes,sublenght,limInf=0,limSup=1):
     bit2number = lambda binary_string: int(binary_string,2)
     number2Real = lambda number: limInf + (((limSup - limInf)/(np.power(2,sublenght) - 1)) * number)
     bit2Real = lambda binary : number2Real(bit2number(binary))
@@ -46,16 +46,18 @@ def sort_population(population,reversed=False):
 
 if __name__ == "__main__":
     POPULATION_SIZE = 10
-    SUB_LENGHT = 7
+    SUB_LENGHT = 9
     QTD_VARIABLES = 3 # X, Y, Z
     MAX_REPEAT = 50
-    limInf = -2
-    limSuperior = 2
+    limX_Inf = -5
+    limX_Sup = 5
 
     generation = 0
 
     print('Inicializando GA')
     population = random_population(sizePopulation=POPULATION_SIZE,sizeChromosome=(SUB_LENGHT * QTD_VARIABLES))
+        
+    
     
     t_begin = time.time()
     while generation < MAX_REPEAT:
@@ -63,8 +65,9 @@ if __name__ == "__main__":
         inicio = time.time()
         population = evaluate_population(population)
         fim = time.time()
-        print(f'avaliacao: {(fim-inicio)}')
+        # print(f'avaliacao: {(fim-inicio)}')
         population = sort_population(population)
+        for p in population: print(p.genes,decode_genes(p.genes,SUB_LENGHT,limInf=limX_Inf,limSup=limX_Sup),p.score)
         population = normalize(population)
         selected = selection(population)
         population = crossover(selected)
@@ -76,7 +79,7 @@ if __name__ == "__main__":
     population = evaluate_population(population)
     population = sort_population(population)
 
-    for p in population: print(p.genes, p.score)
+    for p in population: print(p.genes,decode_genes(p.genes,SUB_LENGHT,limInf=limX_Inf,limSup=limX_Sup),p.score)
 
     line_plot(data=DATA,
             _x=range(1,len(DATA)+1),

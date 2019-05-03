@@ -45,4 +45,4 @@ def save_figure(fig,output_file='figure.png',**kwargs):
     if type(fig) == matplotlib.lines.Line2D:
         fig.get_figure().savefig(output_file)
     else :
-        raise Exception(f'figure type: {type(fig)}')
+        raise Exception(f'Can\'t save figure - object type: {type(fig)}')
