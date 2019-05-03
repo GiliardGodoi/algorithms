@@ -52,17 +52,15 @@ class ConstrictionFactor(VelocityUpdateStrategy):
         c2 = self.C2 * np.ones(len(velocity))
 
         chi = (2 * kappa) / abs((2 - phi - np.sqrt(pow(phi,2) - 4 )))
+        chi *= np.ones(len(particle.position))
 
         r1 = np.random.uniform(0,1,size=len(position))
         r2 = np.random.uniform(0,1,size=len(position))
 
-        ## cognitive = c1 * r1 * (pbest - position)
-        cognitive = np.multiply(c1,r1,np.subtract(pbest,position),dtype=np.float64)
-        ## social = c2 * r2 * (gbest - position)
-        social = np.multiply(c2,r2,np.subtract(gbest,position),dtype=np.float64)
+        cognitive = c1 * r1 * (pbest - position)
+        social = c2 * r2 * (gbest - position)
 
-        ## particle.velocity = chi * (velocity + cognitive + social)
-        particle.velocity = np.multiply(chi,np.add(velocity,cognitive,social,dtype=np.float64),dtype=np.float64)
+        particle.velocity = chi * (velocity + cognitive + social)
 
 
 class LinearReduction(VelocityUpdateStrategy):
