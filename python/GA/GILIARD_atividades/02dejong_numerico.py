@@ -249,7 +249,7 @@ if __name__ == "__main__":
                 ylabel="Melhor Fitness alcançado",
                 ylim=(0.95,1),
                 title="Histórico melhor fitness",
-                output_file="historico-melhor-fitness.png"
+                output_file="exercicio02-historico-melhor-fitness.png"
             )
 
     ax1 = line_plot(data=historico_media_fitness[5],
@@ -258,5 +258,5 @@ if __name__ == "__main__":
                 xlabel="Gerações",
                 ylabel="Média do fitness",
                 title="Média do fitness por geração",
-                output_file="media-fitness-por-geracao.png"
+                output_file="exercicio02-media-fitness-por-geracao.png"
             )
