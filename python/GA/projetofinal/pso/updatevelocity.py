@@ -87,6 +87,8 @@ class LinearReduction(VelocityUpdateStrategy):
 
         k = kwargs.get('iteration', 0)
         W_i = w_max - (k * ( (w_max - w_min) / k_max))
+        W_i = round(W_i,5)
+        print(k,W_i,end='\r')
         W_i *= np.ones(len(velocity))
 
         r1 = np.random.uniform(0,1,size=len(position))

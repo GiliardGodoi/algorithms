@@ -117,11 +117,10 @@ class SearchSpace():
             self.setup()
 
         iteration = 0
-
         while iteration < self.MaxIteration:
             # print(f'Iteration: {iteration}',end='\r')
             for p in self.particles:
-                self.velocityUpdate.update(p,self.gbest.position)
+                self.velocityUpdate.update(p,self.gbest.position,iteration=iteration)
                 self.positionUpdate.update(p)
                 # print(p,p.fitness,p.pbest_fitness)
                 self.fitness(p)

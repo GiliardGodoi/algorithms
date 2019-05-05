@@ -59,7 +59,7 @@ if __name__ == "__main__":
     while i < MAX_REPETITION:
         i += 1 # incrementar
         # Executar PSO
-        X, Y, MIN,MAX = 1,2,-5,5
+        X, Y, MIN,MAX = 1,2,-1,1
         pso.set_updateStrategiesParams(c1=X,c2=Y,w_min=MIN,w_max=MAX)
         pso.setup()
         pso.initialize_particles()
@@ -122,7 +122,7 @@ if __name__ == "__main__":
     plt.plot(x,DADOS_pso_gbest_linear)
     plt.plot(x,DADOS_pso_gbest_constriction)
     plt.plot(x,DADOS_pso_gbest_avgvelocity)
-    plt.title("Comparação gbest simulações")
+    plt.title("Comparação gbest simulações: Função f_9 Rastrigin")
     plt.xlabel("Nro. Simulação")
     plt.ylabel('Fitness gbest')
     plt.grid(True)
