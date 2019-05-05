@@ -21,6 +21,7 @@ if __name__ == "__main__":
     plt.figure()
 
     ## PSO PADRÃO
+    print("PSO Padrão")
     pso = SearchSpace(costFunction=function,
                     nroParticles=NRO_PARTICULAS,
                     maxIteration=NRO_ITERACOES,
@@ -39,12 +40,16 @@ if __name__ == "__main__":
         pso.set_updateStrategiesParams(c1=X,c2=Y,w=Z)
         pso.setup()
         pso.initialize_particles()
+        start = time.time()
         pso.run()
+        end = time.time()
+        print(f'Iteração: {i} - Tempo {(end-start)}s')
 
         # Coletar dados
         DADOS_pso_gbest_padrao.append(pso.gbest.fitness)
 
     ## PSO LINEAR
+    print("PSO Linear")
     pso = SearchSpace(costFunction=function,
                     nroParticles=NRO_PARTICULAS,
                     maxIteration=NRO_ITERACOES,
@@ -63,13 +68,17 @@ if __name__ == "__main__":
         pso.set_updateStrategiesParams(c1=X,c2=Y,w_min=MIN,w_max=MAX)
         pso.setup()
         pso.initialize_particles()
+        start = time.time()
         pso.run()
+        end = time.time()
+        print(f'Iteração: {i} - Tempo {(end-start)}s')
 
         # Coletar dados
         DADOS_pso_gbest_linear.append(pso.gbest.fitness)
 
 
     ## PSO CONSTRICTION
+    print("PSO Constriction")
     pso = SearchSpace(costFunction=function,
                     nroParticles=NRO_PARTICULAS,
                     maxIteration=NRO_ITERACOES,
@@ -88,12 +97,16 @@ if __name__ == "__main__":
         pso.set_updateStrategiesParams(c1=X,c2=Y,kappa=kappa)
         pso.setup()
         pso.initialize_particles()
+        start = time.time()
         pso.run()
+        end = time.time()
+        print(f'Iteração: {i} - Tempo {(end-start)}s')
 
         # Coletar dados
         DADOS_pso_gbest_constriction.append(pso.gbest.fitness)
 
     ## PSO AVG_VELOCITY
+    print("PSO Average Velocity and Position")
     pso = SearchSpace(costFunction=function,
                     nroParticles=NRO_PARTICULAS,
                     maxIteration=NRO_ITERACOES,
@@ -112,7 +125,10 @@ if __name__ == "__main__":
         pso.set_updateStrategiesParams(c1=X,c2=Y,w=Z,c3=K)
         pso.setup()
         pso.initialize_particles()
+        start = time.time()
         pso.run()
+        end = time.time()
+        print(f'Iteração: {i} - Tempo {(end-start)}s')
 
         # Coletar dados
         DADOS_pso_gbest_avgvelocity.append(pso.gbest.fitness)

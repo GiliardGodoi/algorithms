@@ -21,6 +21,7 @@ if __name__ == "__main__":
     plt.figure()
 
     ## PSO PADRÃO
+    print("PSO Padrão")
     pso = SearchSpace(costFunction=function,
                     nroParticles=NRO_PARTICULAS,
                     maxIteration=NRO_ITERACOES,
@@ -39,12 +40,16 @@ if __name__ == "__main__":
         pso.set_updateStrategiesParams(c1=X,c2=Y,w=Z)
         pso.setup()
         pso.initialize_particles()
+        start = time.time()
         pso.run()
+        end = time.time()
+        print(f'Iteração: {i} - Tempo {(end-start)}s')
 
         # Coletar dados
         DADOS_pso_gbest_padrao.append(pso.gbest.fitness)
 
     ## PSO LINEAR
+    print("PSO Linear")
     pso = SearchSpace(costFunction=function,
                     nroParticles=NRO_PARTICULAS,
                     maxIteration=NRO_ITERACOES,
@@ -63,13 +68,17 @@ if __name__ == "__main__":
         pso.set_updateStrategiesParams(c1=X,c2=Y,w_min=MIN,w_max=MAX)
         pso.setup()
         pso.initialize_particles()
+        start = time.time()
         pso.run()
+        end = time.time()
+        print(f'Iteração: {i} - Tempo {(end-start)}s')
 
         # Coletar dados
         DADOS_pso_gbest_linear.append(pso.gbest.fitness)
 
 
     ## PSO CONSTRICTION
+    print("PSO Constriction")
     pso = SearchSpace(costFunction=function,
                     nroParticles=NRO_PARTICULAS,
                     maxIteration=NRO_ITERACOES,
@@ -88,12 +97,16 @@ if __name__ == "__main__":
         pso.set_updateStrategiesParams(c1=X,c2=Y,kappa=kappa)
         pso.setup()
         pso.initialize_particles()
+        start = time.time()
         pso.run()
+        end = time.time()
+        print(f'Iteração: {i} - Tempo {(end-start)}s')
 
         # Coletar dados
         DADOS_pso_gbest_constriction.append(pso.gbest.fitness)
 
     ## PSO AVG_VELOCITY
+    print("PSO Average Velocity and Position")
     pso = SearchSpace(costFunction=function,
                     nroParticles=NRO_PARTICULAS,
                     maxIteration=NRO_ITERACOES,
@@ -112,7 +125,10 @@ if __name__ == "__main__":
         pso.set_updateStrategiesParams(c1=X,c2=Y,w=Z,c3=K)
         pso.setup()
         pso.initialize_particles()
+        start = time.time()
         pso.run()
+        end = time.time()
+        print(f'Iteração: {i} - Tempo {(end-start)}s')
 
         # Coletar dados
         DADOS_pso_gbest_avgvelocity.append(pso.gbest.fitness)
@@ -131,6 +147,26 @@ if __name__ == "__main__":
     plt.legend(legendas,loc='upper right')
 
     salvar_imagem_em = os.path.join(diretorio_imagens,f'comparativo_{function.__name__}_simulacao.png')
+
+    plt.savefig(salvar_imagem_em)
+
+    ## NOVA FIGURA
+    plt.figure()
+
+    plt.plot(x,DADOS_pso_gbest_padrao) 
+    plt.plot(x,DADOS_pso_gbest_linear)
+    plt.plot(x,DADOS_pso_gbest_constriction)
+    plt.plot(x,DADOS_pso_gbest_avgvelocity)
+    plt.title("Comparação gbest simulações: Função f_11 Griewank ")
+    plt.xlabel("Nro. Simulação")
+    plt.ylabel('Fitness gbest')
+    plt.yscale('symlog', linthreshy=0.01)
+    plt.grid(True)
+
+    legendas = ['PSO-padrao','PSO-linear','PSO-constriction','PSO-avg']
+    plt.legend(legendas,loc='upper right')
+
+    salvar_imagem_em = os.path.join(diretorio_imagens,f'comparativo_{function.__name__}_simulacao-semilog.png')
 
     plt.savefig(salvar_imagem_em)
 
