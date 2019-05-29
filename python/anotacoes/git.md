@@ -348,9 +348,9 @@ A mensagem indicando um *merge* manual será:
 	git checkout -b bug-123 origin/bug-123
 
 
-##### Apagar branch remoto
+##### Apagando um  branch remoto
 
-	git push origin:bug-123
+	git push <nome do origin> <nome do branch> --delete
 
 ### Rebasing
 
