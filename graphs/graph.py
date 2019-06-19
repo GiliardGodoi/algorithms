@@ -57,3 +57,21 @@ class Graph:
 
     def __repr__(self):
         return self.__str__()
+
+    @staticmethod
+    def from_file(file_name,delimiter=","):
+
+        if file_name is not None:
+            graph = Graph()
+            with open(file_name,'r') as file:
+                for line in file:
+                    elements = line.split(delimiter)
+                    for i in range(1,len(elements)):
+                        graph.add_edge(elements[0],elements[i])
+
+            return graph
+        else :
+            raise TypeError(f'File name has to be given')
+
+
+
