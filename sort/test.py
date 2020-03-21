@@ -9,14 +9,15 @@ class SortTest(ut.TestCase):
 
     method = None
     array = None
-    sortedArray = None 
+    sortedArray = None
 
     @classmethod
     def setUpClass(self):
-        arr = np.random.randint(0,high=10000,size=1000)
+        arr = np.random.randint(0, high=10000, size=1000)
+
         self.array = list(arr)
-        self.array.sort()
-        self.sortedArray = list(self.array)
+
+        self.sortedArray = list(sorted(self.array))
 
     def setUp(self):
         random.shuffle(self.array)
@@ -25,7 +26,7 @@ class SortTest(ut.TestCase):
         self.method = sort.InsertionSort()
         arr = self.method.sort(self.array)
         self.assertEqual(arr, self.sortedArray)
-    
+
     def test_select_sort(self):
         self.method = sort.SelectionSort()
         arr = self.method.sort(self.array)
@@ -34,7 +35,7 @@ class SortTest(ut.TestCase):
     def test_quick_sort(self):
         self.method = sort.QuickSort()
         arr = self.method.sort(self.array)
-        self.assertEqual(arr, self.sortedArray) 
+        self.assertEqual(arr, self.sortedArray)
 
 if __name__ == "__main__":
     ut.main()
