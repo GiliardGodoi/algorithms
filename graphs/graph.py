@@ -1,68 +1,113 @@
 import sys
 import os
+from collections import defaultdict
 
-class Graph:
+class UGraph:
 
-    def __init__(self,filename=None,delimiter=None):
+    def __init__(self):
         self._edges = 0
-        self._adj = dict()
+        self._adj = defaultdict(set)
 
-        if filename is not None :
-            pass
+    def __len__(self):
+        return self._edges
 
+    def __contains__(self, node):
+        return (node in self._adj)
 
-    def add_edge(self,v,w):
-        if not self.has_vertex(v) : self._adj[v] = set()
-        if not self.has_vertex(w) : self._adj[w] = set()
+    def __str__(self):
+        return f"UGraph <{len(self._adj)}, {self._edges}>"
+
+    def __repr__(self):
+        return str(self)
+
+    @property
+    def edges(self):
+        visited = set()
+        for v in self._adj:
+            visited.add(v)
+            for w in self._adj[v]:
+                if w not in visited:
+                    yield (v, w)
+
+    @property
+    def nodes(self):
+        for v in self._adj.keys():
+            yield v
+
+    def add_node(self, v):
+        if v not in self._adj:
+            self._adj[v]
+            return True
+        else:
+            return False
+
+    def add_edge(self, v, w):
         if not self.has_edge(v,w):
             self._edges += 1
             self._adj[v].add(w)
             self._adj[w].add(v)
-
             return True
 
         return False
 
-    def adjacent_to(self,v):
-        return iter(self._adj[v])
+    def remove_node(self, node):
+        if node in self._adj:
+            for v in self._adj[node]:
+                self._edges -= 1 # removing edges
+                self._adj[v].remove(node)
+            del self._adj[node]
+            return True
+        else:
+            return False
 
-    def vertices(self):
-        return iter(self._adj)
+    def remove_edge(self, v, u):
+        if self.has_edge(v, u):
+            self._edges -= 1
+            self._adj[v].remove(u)
+            self._adj[u].remove(v)
+            return True
+        else:
+            return False
 
-    def has_vertex(self,v):
+    def has_node(self, v):
         return (v in self._adj)
 
     def has_edge(self,v,w):
-        return (w in self._adj[v])
+        if v in self._adj:
+            return (w in self._adj[v])
+        else:
+            return False
 
     def count_edges(self):
         return self._edges
 
-    def __len__(self):
-        return self.count_edges()
+    def count_nodes(self):
+        return len(self._adj)
 
-    def degree(self,v):
-        return len(self._adj[v])
+    def adjacent(self, v, lazy=True):
+        if v in self._adj:
+            method = iter if lazy else set
+            return method(self._adj[v])
+        else:
+            return set()
 
-    def __str__(self):
-        s = ''
+    def degree(self, v):
+        if v in self._adj:
+            return len(self._adj[v])
+        else:
+            return -1 # or raise an error
 
-        for v in self.vertices():
-            s += (str(v) + ' : ')
-            for w in self.adjacent_to(v):
-                s += (str(w) + ' ')
-            s += '\n'
-
-        return s
-
-    def __repr__(self):
-        return self.__str__()
+    def weight(self, v, u):
+        if self.has_edge(v, u):
+            return 1
+        else:
+            return float('inf')
 
     @staticmethod
     def from_file(file_name,delimiter=","):
 
         if file_name is not None:
-            graph = Graph()
+            graph = UGraph()
             with open(file_name,'r') as file:
                 for line in file:
                     elements = line.split(delimiter)
@@ -74,4 +119,50 @@ class Graph:
             raise TypeError(f'File name has to be given')
 
 
+class WGraph(UGraph):
 
+    def __init__(self):
+        self._edges = 0
+        self._adj = defaultdict(dict)
+
+    @property
+    def edges(self):
+        visited = set()
+        for v in self._adj:
+            visited.add(v)
+            for w in self._adj[v].keys():
+                if w not in visited:
+                    yield (v, w)
+
+    def add_edge(self, v, u, weight=1):
+        if not self.has_edge(v, u):
+            self._edges += 1
+        self._adj[v][u] = weight
+        self._adj[u][v] = weight
+        return True
+
+    def remove_node(self, node):
+        if node in self._adj:
+            for v in self._adj[node]:
+                self._edges -= 1 # removing edges
+                self._adj[v].pop(node)
+            del self._adj[node]
+            return True
+        else:
+            return False
+
+    def remove_edge(self, v, u):
+        if self.has_edge(v, u):
+            self._edges -= 1
+            self._adj[v].pop(u)
+            self._adj[u].pop(v)
+            return True
+        else:
+            return False
+
+
+    def weight(self, v, u):
+        if self.has_edge(v, u):
+            return self._adj[v][u]
+        else:
+            return float('inf')
