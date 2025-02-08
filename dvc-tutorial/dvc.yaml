@@ -1,0 +1,8 @@
+stages:
+  prepare:
+    cmd: python .\pipe.py
+    deps:
+    - .\data\dirty_data.csv
+    - .\pipe.py
+    outs:
+    - .\data\normalized\clean_data.csv

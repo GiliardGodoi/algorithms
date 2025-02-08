@@ -1,0 +1,18 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python .\pipe.py
+    deps:
+    - path: .\data\dirty_data.csv
+      hash: md5
+      md5: 296d8480eef3328fe11c0c63834ea1da
+      size: 9746
+    - path: .\pipe.py
+      hash: md5
+      md5: add31b03a212cca0c62df180b1cac876
+      size: 507
+    outs:
+    - path: .\data\normalized\clean_data.csv
+      hash: md5
+      md5: b8f3c886f8cfbd264298822f012ad76d
+      size: 11604

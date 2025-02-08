@@ -1,0 +1,5 @@
+outs:
+- md5: 296d8480eef3328fe11c0c63834ea1da
+  size: 9746
+  hash: md5
+  path: dirty_data.csv
