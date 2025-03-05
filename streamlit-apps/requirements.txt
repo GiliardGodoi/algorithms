@@ -1,0 +1,12 @@
+beautifulsoup4
+lxml
+html5lib
+numpy
+pandas
+requests
+matplotlib
+python-docx
+seaborn
+streamlit
+scikit-learn
+xlsxwriter
