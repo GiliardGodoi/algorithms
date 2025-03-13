@@ -1,0 +1,42 @@
+# Arquivos de dados
+*.csv
+*.tsv
+*.json
+*.xml
+
+# Arquivos compactados
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# Arquivos do Excel
+*.xls
+*.xlsx
+*.xlsm
+*.xlsb
+
+# Arquivos Parquet
+*.parquet
+
+# Arquivos de banco de dados
+*.db
+*.sqlite
+*.sqlite3
+*.sql
+
+# Arquivos HDF5 e Feather
+*.h5
+*.hdf5
+*.feather
+
+# Arquivos Pickle e Joblib
+*.pkl
+*.pickle
+*.joblib
+
+# Arquivos de log e temporários
+*.log
+*.tmp

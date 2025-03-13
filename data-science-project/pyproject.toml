@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "meu_projeto"
+version = "0.1.0"
+authors = [
+    {name="giliard", email="giliard.godoi@gmail.com"}
+]
+description = "Descrição do meu projeto"
+readme = "README.md"
+dependencies = [
+    "numpy",
+    "pandas",
+    "scikit-learn",
+    "matplotlib",
+    "seaborn"
+]
+
+[project.optional-dependencies]
+torch = []
+
+dev = [
+    "pytest",
+    "pytest-cov",   # Para cobertura de testes
+    "black",        # Formatação de código
+    "ruff"          # Linter
+]
