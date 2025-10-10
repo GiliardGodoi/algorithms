@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gráfico de Quadrantes Interativo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f4f4f4;
+      overflow: hidden;
+    }
+    .wrapper {
+      position: relative;
+      /* espaço adicional à esquerda para o label Y */
+      padding: 40px 40px 40px 80px;
+    }
+    .quadrantes {
+      display: grid;
+      grid-template-columns: 200px 200px;
+      grid-template-rows: 200px 200px;
+      grid-template-areas:
+        "baixo-alto alto-alto"
+        "baixo-baixo alto-baixo";
+      gap: 10px;
+      perspective: 800px;
+    }
+    .quadrante {
+      width: 200px;
+      height: 200px;
+      cursor: pointer;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s;
+      z-index: 1;
+    }
+    .quadrante.flipped {
+      transform: rotateY(180deg) scale(1.1);
+      z-index: 5;
+    }
+    .quadrante.baixo-baixo { grid-area: baixo-baixo; }
+    .quadrante.alto-baixo { grid-area: alto-baixo; }
+    .quadrante.baixo-alto { grid-area: baixo-alto; }
+    .quadrante.alto-alto { grid-area: alto-alto; }
+    .face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 1rem;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+    .front { background: #fff; }
+    .back {
+      background: #fafafa;
+      transform: rotateY(180deg);
+      font-size: 0.85rem;
+    }
+    .front[data-status="alto-alto"] { background: #e8f5e9; }
+    .front[data-status="alto-baixo"] { background: #fff3e0; }
+    .front[data-status="baixo-alto"] { background: #fff8e1; }
+    .front[data-status="baixo-baixo"] { background: #ffebee; }
+    .front h3, .back h3 { margin: 0 0 0.5rem; font-size: 1.1rem; }
+    .front p, .back p { margin: 0.2rem 0; font-size: 0.9rem; }
+    .tooltip {
+      position: absolute;
+      bottom: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      white-space: nowrap;
+      font-size: 0.8rem;
+      opacity: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
+    }
+    .quadrante:hover .tooltip { opacity: 1; }
+    /* Eixos */
+    .x-axis {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.9rem;
+      z-index: 10;
+    }
+    .y-axis {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-55%) translateX(-20%) rotate(-90deg);
+      transform-origin: center;
+      font-size: 0.9rem;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <!-- Eixos -->
+    <div class="y-axis">Habilidade de Fala em Público ↑</div>
+    <div class="x-axis">Domínio do Assunto →</div>
+    <!-- Quadrantes -->
+    <div class="quadrantes">
+      <!-- Baixo Domínio / Baixa Fala -->
+      <div class="quadrante baixo-baixo" onclick="this.classList.toggle('flipped')">
+        <div class="face front" data-status="baixo-baixo">
+          <h3>Inseguro e Despreparado</h3>
+          <p>Gagueja, usa frases feitas</p>
+          <p>Nervosismo extremo</p>
+          <div class="tooltip">Clique para mais</div>
+        </div>
+        <div class="face back">
+          <h3>Detalhes</h3>
+          <p><strong>Comportamento:</strong> Hesitação, pausas constantes, olhar para baixo.</p>
+          <p><strong>Impacto:</strong> Baixa credibilidade e engajamento.</p>
+          <p><strong>Recomendações:</strong> Praticar discurso em frente ao espelho, gravar vídeos e estudar o tema.</p>
+        </div>
+      </div>
+      <!-- Alto Domínio / Baixa Fala -->
+      <div class="quadrante alto-baixo" onclick="this.classList.toggle('flipped')">
+        <div class="face front" data-status="alto-baixo">
+          <h3>Teórico Monótono</h3>
+          <p>Conteúdo rico, voz monótona</p>
+          <p>Pouco contato visual</p>
+          <div class="tooltip">Clique para mais</div>
+        </div>
+        <div class="face back">
+          <h3>Detalhes</h3>
+          <p><strong>Comportamento:</strong> Lê slides, tom uniforme, foco excessivo no conteúdo.</p>
+          <p><strong>Impacto:</strong> Cansa a audiência, reduz atenção.</p>
+          <p><strong>Recomendações:</strong> Variar entonação, usar pausas e olhar a plateia.</p>
+        </div>
+      </div>
+      <!-- Baixo Domínio / Alta Fala -->
+      <div class="quadrante baixo-alto" onclick="this.classList.toggle('flipped')">
+        <div class="face front" data-status="baixo-alto">
+          <h3>Carismático Sem Conteúdo</h3>
+          <p>Fala fluida, mas raso</p>
+          <p>Exemplos genéricos</p>
+          <div class="tooltip">Clique para mais</div>
+        </div>
+        <div class="face back">
+          <h3>Detalhes</h3>
+          <p><strong>Comportamento:</strong> Usa anedotas e humor sem dados.</p>
+          <p><strong>Impacto:</strong> Entretem, mas não informa.</p>
+          <p><strong>Recomendações:</strong> Pesquisar fontes, incluir evidências.</p>
+        </div>
+      </div>
+      <!-- Alto Domínio / Alta Fala -->
+      <div class="quadrante alto-alto" onclick="this.classList.toggle('flipped')">
+        <div class="face front" data-status="alto-alto">
+          <h3>Cientista Carismático</h3>
+          <p>Histórias envolventes</p>
+          <p>Exemplos práticos</p>
+          <div class="tooltip">Clique para mais</div>
+        </div>
+        <div class="face back">
+          <h3>Detalhes</h3>
+          <p><strong>Comportamento:</strong> Conecta teoria e prática com ritmo.</p>
+          <p><strong>Impacto:</strong> Alto engajamento e retenção.</p>
+          <p><strong>Recomendações:</strong> Compartilhar feedback e mentorizar colegas.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
