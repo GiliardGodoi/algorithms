@@ -1,0 +1,28 @@
+mindmap
+  root(ConfigParser)
+    (Sections)
+        [sections]
+        [add_section]
+        [has_section]
+        [remove_section]
+    (Options)
+        [options]
+        [has_option]
+        [set]
+        [remove_option]
+    (Getting values)
+        [get]
+        [getint]
+        [getfloat]
+        [getboolean]
+    (Reading)
+        [read]
+        [read_file]
+        [read_string]
+        [read_dict]
+    (Writting)
+        [write]
+    (Defautls)
+        [defaults]
+    (Items)
+        [items]

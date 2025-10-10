@@ -1,0 +1,20 @@
+# Guia rápido sobre `neo vim`
+
+Guia com os principais comandos sobre o editor neo vim.
+
+O editor neo vim (precursor do vim) funciona por modos. Ele possui o modo de inserção, o modo Normal, que tem esse nome que é o modo que normalmente você passa mais tempo.
+
+**Inserção de texto**
+
+- `i` - ativa o mode de inserção. Cursor é colocado à direita do caracter.
+- `a` - ativa o mode de apensão. Cursor é colocado à esquerda do caracter.
+- `A` - modo de apensão. Cursor é colocado no final da linha. 
+- <Esc> - sai do modo de inserção e volta para o modo normal.
+
+**Movimentação do cursor**
+
+A movimentação é feita pelas teclas 'j', 'k' (para cima e para baixo respectivamente) e 'h' e 'l' (esquerda e direita).
+
+A tecla '0' (zero) volta para o início da linha.
+
+
